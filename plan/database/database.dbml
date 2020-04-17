@@ -1,0 +1,140 @@
+Table users {
+  id uuid [pk]
+  login varchar(50) [not null, unique]
+  username varchar(50) [not null]
+  email varchar(255) [not null, unique]
+  password varchar(255) [not null, note: 'password-function']
+  role int
+  created_at timestamp
+}
+
+Table groups {
+  id uuid [pk]
+  name varchar(255) [not null]
+}
+
+Table m_users_groups {
+  id uuid [pk]
+  user uuid [not null, ref: > users.id]
+  group uuid [not null, ref: > groups.id]
+  role playerrole [not null]
+}
+
+Enum playerrole {
+  spectator
+  player
+  player_gm
+  gm
+}
+
+Table characters {
+  id uuid [pk]
+  user uuid [not null, ref: > users.id]
+  group uuid [not null, ref: > groups.id]
+  name varchar(255)
+}
+
+Table l_head {
+  id uuid [pk]
+  title varchar(255) [not null]
+  description text
+}
+
+Table c_head {
+  id uuid [pk]
+  lsit uuid [not null, ref: > l_head.id]
+  character uuid [not null, ref: > characters.id]
+  value uuid [not null, ref: > v_head.id]
+}
+
+Table v_head {
+  id uuid [pk]
+  value varchar(255) [not null]
+  list uuid [not null, ref: > l_head.id]
+}
+
+Table l_attributes {
+  id uuid [pk]
+  title varchar(255) [not null]
+  description text
+}
+
+Table c_attributes {
+  id uuid [pk]
+  list uuid [not null, ref: > l_attributes.id]
+  character uuid [not null, ref: > characters.id]
+  value int [not null]
+}
+
+Table l_advantages {
+  id uuid [pk]
+  title varchar(255) [not null, unique]
+  description text
+}
+
+Table c_advantages {
+  id uuid [pk]
+  list uuid [not null, ref: > l_advantages.id]
+  character uuid [not null, ref: > characters.id]
+  value uuid [ref: > v_advantages.id]
+}
+
+Table v_advantages {
+  id uuid [pk]
+  list uuid [not null, ref: > l_advantages.id]
+  value varchar(255) [not null]
+}
+
+Table experiences {
+  id uuid [pk]
+  character uuid [not null, ref: > characters.id]
+  experience_rank uuid [not null, ref: > experience_ranks.id]
+}
+
+Table experience_ranks {
+  id uuid [pk]
+  title varchar(255) [not null, unique]
+  experience_points int [not null]
+}
+
+Table l_skills {
+  id uuid [pk]
+  title varchar(255) [not null, unique]
+  description text
+  attribute_1 uuid [not null, ref: > l_attributes.id]
+  attribute_2 uuid [not null, ref: > l_attributes.id]
+  attribute_3 uuid [not null, ref: > l_attributes.id]
+}
+
+Table c_skills {
+  id uuid [pk]
+  list uuid [not null, ref: > l_skills.id]
+  character uuid [not null, ref: > characters.id]
+  value int [not null]
+}
+
+Table l_languages {
+  id uuid [pk]
+  title varchar(255) [not null, unique]
+  description text
+}
+
+Table c_languages {
+  id uuid [pk]
+  list uuid [not null, ref: > l_languages.id]
+  character uuid [not null, ref: > characters.id]
+  value int [not null]
+}
+
+Table l_scripts {
+  id uuid [pk]
+  title varchar(255) [not null, unique]
+  description text
+}
+
+Table c_scripts {
+  id uuid [pk]
+  list uuid [not null, ref: > l_scripts.id]
+  character uuid [not null, ref: > characters.id]
+  value int [not null]
+}
