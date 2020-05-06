@@ -1,8 +1,9 @@
 import sqlalchemy
-
+from sqlalchemy.orm import sessionmaker
 
 class Database:
     engine: sqlalchemy.engine
+    Session: sessionmaker
 
     def __init__(self, db_config):
         self.config = db_config
@@ -14,7 +15,8 @@ class Database:
                                             db_config["server"], db_config["port"], db_config["database"])
 
     def create_engine(self):
-        self.engine = sqlalchemy.create_engine(self.create_sql_url())
+        self.engine = sqlalchemy.create_engine(self.create_sql_url(), echo=True)
+        self.Session = sessionmaker(self.engine)
         return
 
     def query_one_value(self, sql, column):
