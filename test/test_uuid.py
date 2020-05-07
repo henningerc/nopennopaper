@@ -1,4 +1,4 @@
-from src.database.uuid import UUIDFactory
+from src.controllers.uuid import UUIDFactory
 from uuid import UUID
 
 
