@@ -1,0 +1,11 @@
+{% extends 'framework/base.tmpl' %}
+
+{% block title%}Login{% endblock %}
+
+{% block content%}
+<form action="login" method="post">
+    Benutzername: <input type="text" name="user"/> <br />
+    Passwort: <input type="password" name="password"/> <br />
+    <input type="submit" value="Login" />
+</form>
+{% endblock %}

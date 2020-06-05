@@ -1,4 +1,4 @@
-from src.views.users import UserView
+from src.views.user import UserView
 
 
 class TestUserView:
