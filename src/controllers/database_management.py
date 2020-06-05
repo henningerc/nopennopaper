@@ -2,6 +2,7 @@ import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 from typing import Union
 
+
 class Database:
     engine: sqlalchemy.engine
     Session: sessionmaker
