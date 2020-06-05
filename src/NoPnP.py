@@ -30,7 +30,8 @@ class NoPnP:
         Installer.install()
         cherrypy.tree.mount(UserView(), '/user')
         cherrypy.config.update({
-            'server.socket_port': int(self.config['HTTP']['port'])
+            'server.socket_port': int(self.config['HTTP']['port']),
+            'tools.sessions.on': True
         })
         cherrypy.engine.start()
         cherrypy.engine.block()

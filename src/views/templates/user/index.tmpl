@@ -1,0 +1,12 @@
+{% extends 'framework/base.tmpl' %}
+
+{% block title%}Benutzeransicht{% endblock %}
+
+{% block content%}
+<div>
+    <h2>Übersicht</h2>
+    <p>Login: {{ user.login }}</p>
+    <p>Benutzername: {{ user.username }}</p>
+    <p>E-Mail: {{ user.email }}</p>
+</div>
+{% endblock %}

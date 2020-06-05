@@ -1,5 +1,6 @@
 import bcrypt
 import uuid
+import cherrypy
 from src.controllers.database_management import Database
 from typing import Union
 from src.models.user import User
@@ -14,6 +15,7 @@ class UserManager:
         if user is None:
             return None
         if bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8")):
+            cherrypy.session['user'] = user.id
             return user.id
         else:
             return None
