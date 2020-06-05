@@ -48,3 +48,10 @@ class UserManager:
             return True
         else:
             return False
+
+    @staticmethod
+    def delete(id):
+        session = Database.Session()
+        user = session.query(User).filter_by(id=id).first()
+        session.delete(user)
+        session.commit()
