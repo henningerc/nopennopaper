@@ -39,6 +39,7 @@ class UserManager:
         session = Database.Session()
         session.add(user)
         session.commit()
+        return user
 
     @staticmethod
     def exists(login=None):

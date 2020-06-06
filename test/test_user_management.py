@@ -1,12 +1,14 @@
 import pytest
-from src.controllers.database_management import Database
 import logging
-from pytest import *
-from uuid import UUID
-from src.controllers.user_management import UserManager
 import cherrypy
-from unittest.mock import patch
+
 from cherrypy.lib.sessions import RamSession
+from pytest import *
+from unittest.mock import patch
+from uuid import UUID
+
+from src.controllers.database_management import Database
+from src.controllers.user_management import UserManager
 
 
 @pytest.fixture(scope="class")

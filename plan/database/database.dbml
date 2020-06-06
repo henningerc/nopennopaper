@@ -30,7 +30,7 @@ Enum playerrole {
 Table characters {
   id uuid [pk]
   user uuid [not null, ref: > users.id]
-  group uuid [not null, ref: > groups.id]
+  group uuid [ref: > groups.id]
   name varchar(255)
 }
 
