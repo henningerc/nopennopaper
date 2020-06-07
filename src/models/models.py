@@ -31,7 +31,7 @@ class Character(Base):
     __tablename__ = 'characters'
 
     id = Column(UUID, primary_key=True)
-    user_id = Column(UUID, ForeignKey('users.id'))
+    user_id = Column(UUID, ForeignKey('users.id'), nullable=False)
     group_id = Column(UUID, ForeignKey('groups.id'))
     name = Column(String)
 
