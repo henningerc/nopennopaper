@@ -1,10 +1,11 @@
 import pytest
 import logging
 
+from cherrypy.lib.sessions import RamSession
 from pytest import *
+from unittest.mock import patch
 
-from src.models.character import Character
-from src.models.user import User
+from src.models.models import User, Character
 from src.controllers.database_management import Database
 from src.controllers.uuid import UUIDFactory
 from src.controllers.user_management import UserManager
@@ -48,19 +49,22 @@ class TestDatabase:
     def test_user_read(self):
         ses = Database.Session()
         assert_user = ses.query(User).filter_by(email="anderertest@test.org").one()
-        assert assert_user.password == "nurmalso"
+        assert assert_user.login == "Test"
 
     def test_character_save(self):
         fact = UUIDFactory(config={"rootname": "nopnp.org"})
         session = Database.Session()
 
-        UserManager.create('character_test', 'Character Test', 'character@test.lan', 'characterpassword')
-        user = UserManager.login('character_test', 'characterpassword')
-        test_character = Character(id=str(fact.create_uuid("character", user.id + "Test Character")),
-                                   rel_user=user,
-                                   name="Test Character")
-        session.add(test_character)
-        session.commit()
+        sess_mock = RamSession()
+        with patch('cherrypy.session', sess_mock, create=True):
+            user = UserManager.login('character_test', 'characterpassword')
+            test_character = Character(id=str(fact.create_uuid("character", "1234Test Character")),
+                                       rel_user=user,
+                                       name="Test Character")
+            session.add(test_character)
+            session.commit()
 
-        assert database.query_one_value("SELECT * FROM \"characters\" WHERE `name`='Test Character'",
-                                        "name") == "Test Character"
+            assert Database.query_one_value("SELECT * FROM \"characters\" WHERE `name`='Test Character'",
+                                            "name") == "Test Character"
+        session.delete(test_character)
+        session.delete(user)

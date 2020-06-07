@@ -1,6 +1,5 @@
 import pytest
 import logging
-import cherrypy
 
 from cherrypy.lib.sessions import RamSession
 from pytest import *

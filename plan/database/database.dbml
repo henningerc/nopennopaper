@@ -15,8 +15,8 @@ Table groups {
 
 Table m_users_groups {
   id uuid [pk]
-  user uuid [not null, ref: > users.id]
-  group uuid [not null, ref: > groups.id]
+  user_id uuid [not null, ref: > users.id]
+  group_id uuid [not null, ref: > groups.id]
   role playerrole [not null]
 }
 
@@ -29,8 +29,8 @@ Enum playerrole {
 
 Table characters {
   id uuid [pk]
-  user uuid [not null, ref: > users.id]
-  group uuid [ref: > groups.id]
+  user_id uuid [not null, ref: > users.id]
+  group_id uuid [ref: > groups.id]
   name varchar(255)
 }
 
@@ -42,15 +42,15 @@ Table l_head {
 
 Table c_head {
   id uuid [pk]
-  lsit uuid [not null, ref: > l_head.id]
-  character uuid [not null, ref: > characters.id]
-  value uuid [not null, ref: > v_head.id]
+  list_id uuid [not null, ref: > l_head.id]
+  character_id uuid [not null, ref: > characters.id]
+  value_id uuid [not null, ref: > v_head.id]
 }
 
 Table v_head {
   id uuid [pk]
   value varchar(255) [not null]
-  list uuid [not null, ref: > l_head.id]
+  list_id uuid [not null, ref: > l_head.id]
 }
 
 Table l_attributes {
@@ -61,8 +61,8 @@ Table l_attributes {
 
 Table c_attributes {
   id uuid [pk]
-  list uuid [not null, ref: > l_attributes.id]
-  character uuid [not null, ref: > characters.id]
+  list_id uuid [not null, ref: > l_attributes.id]
+  character_id uuid [not null, ref: > characters.id]
   value int [not null]
 }
 
@@ -74,21 +74,21 @@ Table l_advantages {
 
 Table c_advantages {
   id uuid [pk]
-  list uuid [not null, ref: > l_advantages.id]
-  character uuid [not null, ref: > characters.id]
-  value uuid [ref: > v_advantages.id]
+  list_id uuid [not null, ref: > l_advantages.id]
+  character_id uuid [not null, ref: > characters.id]
+  value_id uuid [ref: > v_advantages.id]
 }
 
 Table v_advantages {
   id uuid [pk]
-  list uuid [not null, ref: > l_advantages.id]
+  list_id uuid [not null, ref: > l_advantages.id]
   value varchar(255) [not null]
 }
 
 Table experiences {
   id uuid [pk]
-  character uuid [not null, ref: > characters.id]
-  experience_rank uuid [not null, ref: > experience_ranks.id]
+  character_id uuid [not null, ref: > characters.id]
+  experience_rank_id uuid [not null, ref: > experience_ranks.id]
 }
 
 Table experience_ranks {
@@ -101,15 +101,15 @@ Table l_skills {
   id uuid [pk]
   title varchar(255) [not null, unique]
   description text
-  attribute_1 uuid [not null, ref: > l_attributes.id]
-  attribute_2 uuid [not null, ref: > l_attributes.id]
-  attribute_3 uuid [not null, ref: > l_attributes.id]
+  attribute_1_id uuid [not null, ref: > l_attributes.id]
+  attribute_2_id uuid [not null, ref: > l_attributes.id]
+  attribute_3_id uuid [not null, ref: > l_attributes.id]
 }
 
 Table c_skills {
   id uuid [pk]
-  list uuid [not null, ref: > l_skills.id]
-  character uuid [not null, ref: > characters.id]
+  list_id uuid [not null, ref: > l_skills.id]
+  character_id uuid [not null, ref: > characters.id]
   value int [not null]
 }
 
@@ -121,8 +121,8 @@ Table l_languages {
 
 Table c_languages {
   id uuid [pk]
-  list uuid [not null, ref: > l_languages.id]
-  character uuid [not null, ref: > characters.id]
+  list_id uuid [not null, ref: > l_languages.id]
+  character_id uuid [not null, ref: > characters.id]
   value int [not null]
 }
 
@@ -134,7 +134,7 @@ Table l_scripts {
 
 Table c_scripts {
   id uuid [pk]
-  list uuid [not null, ref: > l_scripts.id]
-  character uuid [not null, ref: > characters.id]
+  list_id uuid [not null, ref: > l_scripts.id]
+  character_id uuid [not null, ref: > characters.id]
   value int [not null]
 }

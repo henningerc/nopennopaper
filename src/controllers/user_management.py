@@ -3,7 +3,7 @@ import uuid
 import cherrypy
 from src.controllers.database_management import Database
 from typing import Union
-from src.models.user import User
+from src.models.models import User
 from src.controllers.uuid import UUIDFactory
 
 
