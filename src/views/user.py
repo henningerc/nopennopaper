@@ -1,7 +1,7 @@
 import cherrypy
 from src.views.view import View
 from src.controllers.user_management import UserManager
-from src.models.user import User
+from src.models.models import User
 from src.controllers.database_management import Database
 
 

@@ -3,7 +3,7 @@ import uuid
 import cherrypy
 from src.controllers.database_management import Database
 from typing import Union
-from src.models.models import User
+from src.models.models import User, Character
 from src.controllers.uuid import UUIDFactory
 
 
@@ -22,7 +22,7 @@ class UserManager:
 
     @staticmethod
     def change_password(user_id: uuid.UUID, password: str):
-        ses = Database.Session()
+        ses = Database.Session
         user = ses.query(User).filter_by(id=str(user_id)).one()
         user.password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode()
         ses.commit()
@@ -36,14 +36,14 @@ class UserManager:
                     email=email,
                     password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(),
                     role=1)
-        session = Database.Session()
+        session = Database.Session
         session.add(user)
         session.commit()
         return user
 
     @staticmethod
     def exists(login=None):
-        session = Database.Session()
+        session = Database.Session
         ct = session.query(User).filter_by(login=login).count()
         if ct>0:
             return True
@@ -52,7 +52,12 @@ class UserManager:
 
     @staticmethod
     def delete(id):
-        session = Database.Session()
+        session = Database.Session
         user = session.query(User).filter_by(id=id).first()
         session.delete(user)
         session.commit()
+
+    # TODO: is_allowed should go by the character and see if the user is allowed to edit it.
+    @staticmethod
+    def able_view_character(character: Character) -> bool:
+        return True

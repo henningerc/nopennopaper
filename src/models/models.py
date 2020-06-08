@@ -37,3 +37,15 @@ class Character(Base):
 
     user = relationship('User')
     group = relationship('Group')
+
+
+class LHead(Base):
+    __tablename__ = 'l_head'
+    id = Column(UUID, primary_key=True)
+    title = Column(String, nullable=False)
+    description = Column(String)
+
+
+class CHead(Base):
+    __tablename__ = 'c_head'
+

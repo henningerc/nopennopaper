@@ -1,11 +1,11 @@
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from typing import Union, Dict
 
 
 class Database:
     engine: sqlalchemy.engine
-    Session: sessionmaker()
+    Session: Session
     config: Dict
 
     def __init__(self, db_config):
