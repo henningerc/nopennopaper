@@ -5,7 +5,7 @@ from typing import Union, Dict
 
 class Database:
     engine: sqlalchemy.engine
-    Session: Session
+    Session: Session()
     config: Dict
 
     def __init__(self, db_config):

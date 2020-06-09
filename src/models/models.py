@@ -41,11 +41,32 @@ class Character(Base):
 
 class LHead(Base):
     __tablename__ = 'l_head'
+
     id = Column(UUID, primary_key=True)
     title = Column(String, nullable=False)
     description = Column(String)
 
+    values = relationship('VHead', back_populates='list')
+    head_fields = relationship('CHead', back_populates='list')
+
+
+class VHead(Base):
+    __tablename__ = 'v_head'
+
+    id = Column(UUID, primary_key=True)
+    value = Column(String, nullable=True)
+    list_id = Column(UUID, ForeignKey('l_head.id'))
+
+    list = relationship('LHead', back_populates='values')
+
 
 class CHead(Base):
     __tablename__ = 'c_head'
+
+    id = Column(UUID, primary_key=True)
+    list_id = Column(UUID, ForeignKey('l_head.id'))
+    character_id = Column(UUID, ForeignKey('character.id'))
+    value_id = Column(UUID, ForeignKey('v_head.id'))
+
+    list = relationship('LHead', back_populates='head_fields')
 
