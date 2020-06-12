@@ -5,22 +5,15 @@ from typing import List
 
 from cherrypy.lib.sessions import RamSession
 import pytest
-import sqlalchemy.orm
-
 
 from src.controllers.database_management import Database
 from src.controllers.user_management import UserManager
 from src.controllers.uuid import UUIDFactory
 from src.models.models import User, Character
 
-session: sqlalchemy.orm.Session
-fact: UUIDFactory
-
 
 # Prepare variables
 def prepare_variables():
-    global session
-    global fact
     logging.basicConfig()
     logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
@@ -33,16 +26,12 @@ def prepare_variables():
         "port": "5432"
     }
     Database(config)
-    session = Database.Session()
-
-    fact = UUIDFactory(config={"rootname": "nopnp.org"})
 
 
 def setup_add_user():
-    global session
-    global fact
+    session = Database.Session()
 
-    v_user = User(id=fact.create_uuid("user", "Test"),
+    v_user = User(id=UUIDFactory.create_uuid("user", "Test"),
                   login="Test",
                   username="Test-Benutzer",
                   email="test@test.org",
@@ -101,9 +90,8 @@ def fixture_user_data():
 
 class TestEmptyDatabase:
     def test_user_save(self, fixture_user_empty):
-        global fact
-        global session
-        test_user = User(id=fact.create_uuid("user", "Test2"),
+        session = Database.Session()
+        test_user = User(id=UUIDFactory.create_uuid("user", "Test2"),
                          login="Test2",
                          username="test",
                          email="zweiter.test@test.org",
@@ -116,12 +104,11 @@ class TestEmptyDatabase:
         assert assert_user.email == "zweiter.test@test.org"
 
     def test_character_save(self, fixture_character_empty):
-        global session
-        global fact
+        session = Database.Session()
 
         sess_mock = RamSession()
         with patch('cherrypy.session', sess_mock, create=True):
-            uuid = fact.create_uuid("character", "1234Test Character")
+            uuid = UUIDFactory.create_uuid("character", "1234Test Character")
             user_id = UserManager.login('Test', 'diesespasswort')
             user = session.query(User).filter_by(id=user_id).one()
             test_character = Character(id=uuid,
@@ -140,6 +127,6 @@ class TestDatabase:
         assert Database.query_one_value("SELECT * FROM \"users\" WHERE login='Test'", "email") == "test@test.org"
 
     def test_user_read(self, fixture_user_data):
-        global session
+        session = Database.Session()
         assert_user = session.query(User).filter_by(email="test@test.org").one()
         assert assert_user.login == "Test"
