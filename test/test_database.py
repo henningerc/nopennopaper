@@ -1,9 +1,7 @@
 import bcrypt
 import logging
-from unittest.mock import patch
 from typing import List
 
-from cherrypy.lib.sessions import RamSession
 import pytest
 
 from src.controllers.database_management import Database
@@ -90,6 +88,11 @@ def fixture_character_empty():
 
 
 @pytest.fixture()
+def fixture_character_head_empty():
+    pass
+
+
+@pytest.fixture()
 def fixture_user_empty():
     setup_create_tables(['users'])
 
@@ -119,18 +122,19 @@ class TestEmptyDatabase:
     def test_character_save(self, fixture_character_empty):
         session = Database.Session()
 
-        sess_mock = RamSession()
-        with patch('cherrypy.session', sess_mock, create=True):
-            uuid = UUIDFactory.create_uuid("character", "1234Test Character")
-            user = session.query(User).filter_by(login='Test').one()
-            test_character = Character(id=uuid,
-                                       user=user,
-                                       name="Test Character")
-            session.add(test_character)
-            session.commit()
+        uuid = UUIDFactory.create_uuid("character", "1234Test Character")
+        user = session.query(User).filter_by(login='Test').one()
+        test_character = Character(id=uuid,
+                                   user=user,
+                                   name="Test Character")
+        session.add(test_character)
+        session.commit()
 
-            assert Database.query_one_value("SELECT * FROM \"characters\" WHERE name='Test Character'",
-                                            "name") == "Test Character"
+        assert Database.query_one_value("SELECT * FROM \"characters\" WHERE name='Test Character'",
+                                        "name") == "Test Character"
+
+    def test_head_values_save(self):
+        pass
 
 
 class TestDatabase:
