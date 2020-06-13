@@ -7,21 +7,20 @@ from cherrypy.lib.sessions import RamSession
 import pytest
 
 from src.controllers.database_management import Database
-from src.controllers.user_management import UserManager
 from src.controllers.uuid import UUIDFactory
 from src.models.models import User, Character
 
 
 # Prepare variables
-def prepare_variables():
+def prepare_variables() -> None:
     logging.basicConfig()
     logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
     config = {
         "server": "localhost",
-        "database": "noPnP",
-        "username": "postgres",
-        "password": "IlFs2000",
+        "database": "noPnP_Test",
+        "username": "noPnP_Test",
+        "password": "PasswordForTest",
         "engine": "postgresql",
         "port": "5432"
     }
@@ -53,8 +52,21 @@ def setup_create_tables(tables: List[str]):
                             "id" uuid PRIMARY KEY,
                             "user_id" uuid NOT NULL,
                             "group_id" uuid,
-                            "name" varchar(255));'''}
-
+                            "name" varchar(255));''',
+               'l_head': '''CREATE TABLE "l_head" (
+                            "id" uuid PRIMARY KEY,
+                            "title" varchar(255) NOT NULL,
+                            "description" text);''',
+               'c_head': '''CREATE TABLE "c_head" (
+                            "id" uuid PRIMARY KEY,
+                            "list_id" uuid NOT NULL,
+                            "character_id" uuid NOT NULL,
+                            "value_id" uuid NOT NULL);''',
+               'v_head': '''CREATE TABLE "v_head" (
+                            "id" uuid PRIMARY KEY,
+                            "value" varchar(255) NOT NULL,
+                            "list_id" uuid NOT NULL);'''}
+    
     prepare_variables()
     setup_clear_database()
 
@@ -102,6 +114,7 @@ class TestEmptyDatabase:
 
         assert_user = session.query(User).filter_by(login="Test2").first()
         assert assert_user.email == "zweiter.test@test.org"
+        session.commit()
 
     def test_character_save(self, fixture_character_empty):
         session = Database.Session()
@@ -109,8 +122,7 @@ class TestEmptyDatabase:
         sess_mock = RamSession()
         with patch('cherrypy.session', sess_mock, create=True):
             uuid = UUIDFactory.create_uuid("character", "1234Test Character")
-            user_id = UserManager.login('Test', 'diesespasswort')
-            user = session.query(User).filter_by(id=user_id).one()
+            user = session.query(User).filter_by(login='Test').one()
             test_character = Character(id=uuid,
                                        user=user,
                                        name="Test Character")
@@ -119,7 +131,6 @@ class TestEmptyDatabase:
 
             assert Database.query_one_value("SELECT * FROM \"characters\" WHERE name='Test Character'",
                                             "name") == "Test Character"
-            session.commit()
 
 
 class TestDatabase:
