@@ -5,7 +5,6 @@ from typing import List
 import pytest
 
 from src.controllers.database_management import Database
-from src.controllers.uuid import UUIDFactory
 from src.models.models import User, Character
 
 
@@ -28,8 +27,7 @@ def prepare_variables() -> None:
 def setup_add_user():
     session = Database.Session()
 
-    v_user = User(id=UUIDFactory.create_uuid("user", "Test"),
-                  login="Test",
+    v_user = User(login="Test",
                   username="Test-Benutzer",
                   email="test@test.org",
                   password=bcrypt.hashpw("diesespasswort".encode("utf-8"), bcrypt.gensalt()).decode(),
@@ -106,8 +104,7 @@ def fixture_user_data():
 class TestEmptyDatabase:
     def test_user_save(self, fixture_user_empty):
         session = Database.Session()
-        test_user = User(id=UUIDFactory.create_uuid("user", "Test2"),
-                         login="Test2",
+        test_user = User(login="Test2",
                          username="test",
                          email="zweiter.test@test.org",
                          password="oderdas",
@@ -122,10 +119,8 @@ class TestEmptyDatabase:
     def test_character_save(self, fixture_character_empty):
         session = Database.Session()
 
-        uuid = UUIDFactory.create_uuid("character", "1234Test Character")
         user = session.query(User).filter_by(login='Test').one()
-        test_character = Character(id=uuid,
-                                   user=user,
+        test_character = Character(user=user,
                                    name="Test Character")
         session.add(test_character)
         session.commit()

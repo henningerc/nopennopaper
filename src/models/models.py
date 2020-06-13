@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from sqlalchemy import String, Column, ForeignKey, Integer, DateTime
 from sqlalchemy.orm import relationship
@@ -11,7 +12,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     login = Column(String, nullable=False)
     username = Column(String, nullable=False)
     email = Column(String, nullable=False)
@@ -30,7 +31,7 @@ class Group(Base):
 class Character(Base):
     __tablename__ = 'characters'
 
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     group_id = Column(UUID(as_uuid=True), ForeignKey('groups.id'))
     name = Column(String)
