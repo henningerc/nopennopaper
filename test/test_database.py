@@ -5,7 +5,7 @@ from typing import List
 import pytest
 
 from src.controllers.database_management import Database
-from src.models.models import User, Character
+from src.models.models import User, Character, LHead, VHead, CHead
 
 
 # Prepare variables
@@ -34,6 +34,7 @@ def setup_add_user():
                   role=0)
     session.add(v_user)
     session.commit()
+    return v_user
 
 
 def setup_create_tables(tables: List[str]):
@@ -76,7 +77,30 @@ def setup_clear_database():
     with Database.engine.connect() as connection:
         connection.execute("DROP SCHEMA public CASCADE;")
         connection.execute("CREATE SCHEMA public;")
-    return
+
+
+def setup_add_head_list():
+    session = Database.Session()
+    head_list = LHead(title='Test Liste', description='Test Description')
+    session.add(head_list)
+    session.commit()
+    return head_list
+
+
+def setup_add_head_value(head_list: LHead):
+    session = Database.Session()
+    head_value = VHead(value='Test Wert', list=head_list)
+    session.add(head_value)
+    session.commit()
+    return head_value
+
+
+def setup_add_character(v_user: User):
+    session = Database.Session()
+    v_character = Character(user=v_user, name='Testcharacter')
+    session.add(v_character)
+    session.commit()
+    return v_character
 
 
 @pytest.fixture()
@@ -87,6 +111,11 @@ def fixture_character_empty():
 
 @pytest.fixture()
 def fixture_character_head_empty():
+    setup_create_tables(['users', 'characters', 'c_head', 'l_head', 'v_head'])
+    v_user = setup_add_user()
+    setup_add_character(v_user)
+    head_list = setup_add_head_list()
+    setup_add_head_value(head_list)
     pass
 
 
@@ -127,8 +156,21 @@ class TestEmptyDatabase:
 
         assert Database.query_one_value("SELECT * FROM \"characters\" WHERE name='Test Character'",
                                         "name") == "Test Character"
+        character = session.query(Character).filter_by(name='Test Character').one()
+        assert character.user.email == 'test@test.org'
 
-    def test_head_values_save(self):
+    def test_head_values_save(self, fixture_character_head_empty):
+        head_list: LHead
+        session = Database.Session()
+        character = session.query(Character).filter_by(name='Testcharakter').first()
+        head_list = session.query(LHead).filter_by(title='Test Liste').first()
+        head_value = head_list.values[0]
+        head_connection = CHead(list=head_list, value=head_value, character=character)
+        session.add(head_connection)
+        session.commit()
+
+        check_character = session.query(Character).filter_by(name='Testcharakter').first()
+        assert check_character.head_values[0].list.title == 'Test Liste'
         pass
 
 

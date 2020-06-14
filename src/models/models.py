@@ -38,6 +38,7 @@ class Character(Base):
 
     user = relationship('User')
     group = relationship('Group')
+    #head_values = relationship('CHead', back_populates='character')
 
 
 class LHead(Base):
@@ -69,5 +70,6 @@ class CHead(Base):
     character_id = Column(UUID(as_uuid=True), ForeignKey('character.id'))
     value_id = Column(UUID(as_uuid=True), ForeignKey('v_head.id'))
 
+    character = relationship('Character')
     list = relationship('LHead', back_populates='head_fields')
-
+    value = relationship('VHead')
