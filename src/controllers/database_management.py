@@ -5,7 +5,7 @@ from typing import Union, Dict
 
 class Database:
     engine: sqlalchemy.engine
-    Session: Session()
+    session: Session
     config: Dict
 
     def __init__(self, db_config):
@@ -15,7 +15,8 @@ class Database:
     @staticmethod
     def create_engine():
         Database.engine = sqlalchemy.create_engine(Database.create_sql_url(), echo=True)
-        Database.Session = sessionmaker(Database.engine)
+        i_session = sessionmaker(Database.engine)
+        Database.session = i_session()
         return
 
     @staticmethod
