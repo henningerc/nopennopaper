@@ -4,7 +4,6 @@ import cherrypy
 from src.controllers.database_management import Database
 from typing import Union
 from src.models.models import User, Character
-from src.controllers.uuid import UUIDFactory
 
 
 class UserManager:
@@ -29,9 +28,7 @@ class UserManager:
 
     @staticmethod
     def create(login=None, username=None, email=None, password=None):
-        fact = UUIDFactory
-        user = User(id=str(fact.create_uuid("user", login)),
-                    login=login,
+        user = User(login=login,
                     username=username,
                     email=email,
                     password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(),
