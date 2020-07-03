@@ -19,9 +19,9 @@ def prepare_variables():
 
     config = {
         "server": "localhost",
-        "database": "noPnP",
-        "username": "postgres",
-        "password": "IlFs2000",
+        "database": "noPnP_test",
+        "username": "noPnP",
+        "password": "21031208",
         "engine": "postgresql",
         "port": "5432"
     }

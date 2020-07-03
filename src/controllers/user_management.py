@@ -36,14 +36,14 @@ class UserManager:
                     email=email,
                     password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(),
                     role=1)
-        session = Database.Session
+        session = Database.Session()
         session.add(user)
         session.commit()
         return user
 
     @staticmethod
     def exists(login=None):
-        session = Database.Session
+        session = Database.Session()
         ct = session.query(User).filter_by(login=login).count()
         if ct>0:
             return True
@@ -51,9 +51,9 @@ class UserManager:
             return False
 
     @staticmethod
-    def delete(id):
+    def delete(user_id):
         session = Database.Session
-        user = session.query(User).filter_by(id=id).first()
+        user = session.query(User).filter_by(id=user_id).first()
         session.delete(user)
         session.commit()
 
