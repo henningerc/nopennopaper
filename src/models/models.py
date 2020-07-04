@@ -20,6 +20,8 @@ class User(Base):
     role = Column(Integer)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    characters = relationship('Character', back_populates='user')
+
 
 class Group(Base):
     __tablename__ = 'groups'
