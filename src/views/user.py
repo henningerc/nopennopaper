@@ -13,7 +13,7 @@ class UserView(View):
             return template.render()
         else:
             if UserManager.login(user, password) is not None:
-                raise cherrypy.HTTPRedirect("/user")
+                raise cherrypy.HTTPRedirect("/")
             else:
                 return "Fehler!"
 
@@ -23,3 +23,14 @@ class UserView(View):
         template = self.env.get_template("/user/index.tmpl")
         return template.render(user=user)
 
+    @cherrypy.expose()
+    def list(self):
+        session = Database.Session()
+        user = UserManager.get_user(db_session=session)
+        if user.is_admin():
+            users = session.query(User).all()
+            template = self.env.get_template("/user/list.tmpl")
+            return template.render(users=users)
+        else:
+            template = self.env.get_template("errors/admin.tmpl")
+            return template.render()

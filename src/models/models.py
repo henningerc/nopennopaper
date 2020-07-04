@@ -22,6 +22,11 @@ class User(Base):
 
     characters = relationship('Character', back_populates='user')
 
+    def is_admin(self):
+        if self.role>=10:
+            return True
+        return False
+
 
 class Group(Base):
     __tablename__ = 'groups'

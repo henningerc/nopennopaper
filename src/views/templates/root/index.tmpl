@@ -3,8 +3,5 @@
 {% block title%}Benutzerliste{% endblock %}
 
 {% block content%}
-    <h1>Liste der Benutzer</h1>
-    {% for user in users %}
-        <p>{{ user.username }}</p>
-    {% endfor %}
+    <a href="user/list">Benutzerliste</a>
 {% endblock %}
