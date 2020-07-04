@@ -1,19 +1,10 @@
 {% extends 'framework/base.tmpl' %}
 
-{% block title%}Benutzeransicht{% endblock %}
+{% block title%}Benutzerliste{% endblock %}
 
 {% block content%}
-<div>
-    <h2>Übersicht</h2>
-    <p>ID: {{ user.id }}</p>
-    <p>Login: {{ user.login }}</p>
-    <p>Benutzername: {{ user.username }}</p>
-    <p>E-Mail: {{ user.email }}</p>
-    <p><a href="/character/create">Charakter anlegen</a></p>
-    <p>
-        {% for character in user.characters %}
-            <p><a href="/character/view?id={{ character.id }}">{{ character.name }}</a></p>
-        {% endfor %}
-    </p>
-</div>
+    <h1>Liste der Benutzer</h1>
+    {% for user in users %}
+        <p><a href="/user/show?user_id={{ user.id }}">{{ user.username }}</a></p>
+    {% endfor %}
 {% endblock %}

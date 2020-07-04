@@ -60,7 +60,7 @@ class UserManager:
         session.commit()
 
     @staticmethod
-    def get_user(required=True, db_session=None):
+    def get_user(required=True, db_session=None) -> User:
         user_id = cherrypy.session.get('user', None)
         if user_id is not None:
             if db_session is None:
