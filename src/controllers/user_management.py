@@ -29,10 +29,8 @@ class UserManager:
         ses.commit()
 
     @staticmethod
-    def create(login=None, username=None, email=None, password=None):
-        fact = UUIDFactory
-        user = User(id=str(fact.create_uuid("user", login)),
-                    login=login,
+    def create(login=None, username=None, email=None, password=None) -> User:
+        user = User(login=login,
                     username=username,
                     email=email,
                     password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(),
