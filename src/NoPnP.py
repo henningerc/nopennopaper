@@ -1,6 +1,8 @@
 import configparser
 import cherrypy
+
 from src.views.user import UserView
+from src.views.character import CharacterView
 from src.controllers.database_management import Database
 from src.controllers.installer import Installer
 
@@ -29,6 +31,7 @@ class NoPnP:
         Database(self.config['Database'])
         Installer.install()
         cherrypy.tree.mount(UserView(), '/user')
+        cherrypy.tree.mount(CharacterView(), '/character')
         cherrypy.config.update({
             'server.socket_port': int(self.config['HTTP']['port']),
             'tools.sessions.on': True
