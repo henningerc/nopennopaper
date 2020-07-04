@@ -13,7 +13,7 @@ class CharacterView(View):
     # TODO: Tests for the view
     @cherrypy.expose
     def view(self, id):
-        session = Database.Session
+        session = Database.Session()
         character = session.query(Character).filter_by(id=id).one()
         if UserManager.able_view_character(character):
             template = self.env.get_template('/character/view.tmpl')
