@@ -19,11 +19,7 @@ class UserView(View):
 
     @cherrypy.expose
     def index(self):
-        user_id = cherrypy.session.get('user', None)
-        if user_id is not None :
-            session = Database.Session()
-            user = session.query(User).filter_by(id=user_id).first()
-            template = self.env.get_template("/user/index.tmpl")
-            return template.render(user=user)
-        else:
-            return "Kein Benutzer!"
+        user = UserManager.get_user()
+        template = self.env.get_template("/user/index.tmpl")
+        return template.render(user=user)
+

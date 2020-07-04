@@ -102,17 +102,16 @@ class TestEmptyDatabase:
 
         assert_user = session.query(User).filter_by(login="Test2").first()
         assert assert_user.email == "zweiter.test@test.org"
+        session.commit()
 
     def test_character_save(self, fixture_character_empty):
         session = Database.Session()
 
         sess_mock = RamSession()
         with patch('cherrypy.session', sess_mock, create=True):
-            uuid = UUIDFactory.create_uuid("character", "1234Test Character")
             user_id = UserManager.login('Test', 'diesespasswort')
             user = session.query(User).filter_by(id=user_id).one()
-            test_character = Character(id=uuid,
-                                       user=user,
+            test_character = Character(user=user,
                                        name="Test Character")
             session.add(test_character)
             session.commit()
