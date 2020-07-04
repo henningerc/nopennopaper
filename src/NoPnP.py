@@ -1,3 +1,5 @@
+import os
+
 import configparser
 import cherrypy
 
@@ -29,11 +31,17 @@ class NoPnP:
     def startup(self):
         Database(self.config['Database'])
         Installer.install()
-        cherrypy.tree.mount(RootView(), '/')
+        conf = {
+            '/static': {
+                'tools.staticdir.on': True,
+                'tools.staticdir.dir': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'views', 'static')
+            }
+        }
         cherrypy.config.update({
             'server.socket_port': int(self.config['HTTP']['port']),
-            'tools.sessions.on': True
+            'tools.sessions.on': True,
         })
+        cherrypy.tree.mount(RootView(), '/', config=conf)
         cherrypy.engine.start()
         cherrypy.engine.block()
 
