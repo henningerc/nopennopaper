@@ -20,7 +20,7 @@ class UserView(View):
     @cherrypy.expose
     def index(self):
         user = UserManager.get_user()
-        template = self.env.get_template("/user/index.tmpl")
+        template = self.env.get_template("/user/show.tmpl")
         return template.render(user=user)
 
     @cherrypy.expose()
@@ -34,3 +34,18 @@ class UserView(View):
         else:
             template = self.env.get_template("errors/admin.tmpl")
             return template.render()
+
+    @cherrypy.expose()
+    def show(self, user_id=None):
+        if user_id is None:
+            return self.index()
+        else:
+            user = UserManager.get_user()
+            if user.is_admin or str(user.id)==user_id:
+                db_ses = Database.Session()
+                user = db_ses.query(User).filter_by(id=user_id).first()
+                template = self.env.get_template('/user/show.tmpl')
+                return template.render(user=user)
+            else:
+                template = self.env.get_template('errors/admin.tmpl')
+                return template.render()
