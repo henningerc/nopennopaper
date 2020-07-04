@@ -10,5 +10,10 @@
     <p>Benutzername: {{ user.username }}</p>
     <p>E-Mail: {{ user.email }}</p>
     <p><a href="/character/create">Charakter anlegen</a></p>
+    <p>
+        {% for character in user.characters %}
+            <p><a href="/character/view?id={{ character.id }}">{{ character.name }}</a></p>
+        {% endfor %}
+    </p>
 </div>
 {% endblock %}
