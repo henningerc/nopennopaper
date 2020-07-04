@@ -76,7 +76,8 @@ class UserManager:
         else:
             return None
 
-    # TODO: is_allowed should go by the character and see if the user is allowed to edit it.
     @staticmethod
     def able_view_character(character: Character) -> bool:
-        return True
+        if str(character.user_id) == str(cherrypy.session.get('user', None)):
+            return True
+        return False
