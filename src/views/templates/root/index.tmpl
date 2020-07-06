@@ -7,12 +7,20 @@
     <p><a href="user/create">Benutzer anlegen</a></p>
     <p>Gruppe anlegen</p>
     <div id="lists">
+        <h3>{{ user.username }}</h3>
         <h3>Charaktere <a href="/character/create">(+)</a></h3>
         <table class="list">
             <tr>
                 <th>Charakter</th>
                 <th>Gruppe</th>
             </tr>
+            {% for character in user.characters %}
+            <tr>
+                <td>
+                    {{ character.name }}
+                </td>
+            </tr>
+            {% endfor %}
         </table>
         <h3>Gruppen (+)</h3>
         <table class="list">
@@ -20,6 +28,11 @@
                 <th>Gruppe</th>
                 <th>Charaktere</th>
             </tr>
+            {% for group in user.groups %}
+                <tr>
+                    <td>{{ group.group.name }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 {% endblock %}
