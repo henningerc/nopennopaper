@@ -1,12 +1,20 @@
 import datetime
 import uuid
+import enum
 
-from sqlalchemy import String, Column, ForeignKey, Integer, DateTime
+from sqlalchemy import String, Column, ForeignKey, Integer, DateTime, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
+
+class Playerrole(enum.Enum):
+    spectator = 1
+    player = 2
+    player_gm = 3
+    gm = 4
 
 
 class User(Base):
@@ -21,9 +29,10 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     characters = relationship('Character', back_populates='user')
+    groups = relationship('MUserGroup', back_populates='user')
 
     def is_admin(self):
-        if self.role>=10:
+        if self.role >= 10:
             return True
         return False
 
@@ -31,8 +40,20 @@ class User(Base):
 class Group(Base):
     __tablename__ = 'groups'
 
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
     name = Column(String)
+
+
+class MUserGroup(Base):
+    __tablename__ = 'm_users_groups'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    group_id = Column(UUID(as_uuid=True), ForeignKey('groups.id'), nullable=False)
+    role = Column(Enum(Playerrole), nullable=False)
+
+    user = relationship('User')
+    group = relationship('Group')
 
 
 class Character(Base):
