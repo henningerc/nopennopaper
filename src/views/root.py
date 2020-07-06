@@ -6,6 +6,7 @@ import cherrypy
 from src.views.view import View
 from src.views.user import UserView
 from src.views.character import CharacterView
+from src.views.group import GroupView
 
 
 class RootView(View):
@@ -15,6 +16,7 @@ class RootView(View):
 
         self.user = UserView()
         self.character = CharacterView()
+        self.group = GroupView()
 
     @cherrypy.expose
     def index(self):
