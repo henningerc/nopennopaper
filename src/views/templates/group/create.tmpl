@@ -1,0 +1,10 @@
+{% extends 'framework/base.tmpl' %}
+
+{% block title%}Gruppe anlegen{% endblock %}
+
+{% block content%}
+<form action="create" method="post">
+    <p>Gruppenname: <input type="text" name="groupname"/></p>
+    <p><input type="submit" name="submit" value="Gruppe erstellen"/></p>
+</form>
+{% endblock %}
