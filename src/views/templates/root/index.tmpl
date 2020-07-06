@@ -1,8 +1,25 @@
 {% extends 'framework/base.tmpl' %}
 
-{% block title%}Benutzerliste{% endblock %}
+{% block title%}Hauptseite{% endblock %}
 
 {% block content%}
     <p><a href="user/list">Benutzerliste</a></p>
     <p><a href="user/create">Benutzer anlegen</a></p>
+    <p>Gruppe anlegen</p>
+    <div id="lists">
+        <h3>Charaktere <a href="/character/create">(+)</a></h3>
+        <table class="list">
+            <tr>
+                <th>Charakter</th>
+                <th>Gruppe</th>
+            </tr>
+        </table>
+        <h3>Gruppen (+)</h3>
+        <table class="list">
+            <tr>
+                <th>Gruppe</th>
+                <th>Charaktere</th>
+            </tr>
+        </table>
+    </div>
 {% endblock %}

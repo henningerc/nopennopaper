@@ -1,8 +1,12 @@
 <html>
     <head>
-        <title>No Pen, No Paper: {% block title %}{% endblock %}</title>
+        <title>No Pen, No Paper: {{ self.title() }}</title>
+        <link rel="stylesheet" href="/static/css/nopnp.css" type="text/css" />
     </head>
     <body>
-        {% block content %}{% endblock %}
+    <div id="head"><h1 id="title">No Pen, No Paper: {{ self.title() }}</h1></div>
+    <div id="content">
+        {{ self.content() }}
+    </div>
     </body>
 </html>
