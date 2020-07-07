@@ -23,4 +23,14 @@ table.list {
     border-color: #ffffff;
     border-style: solid;
     width: 100%;
-}  
+}
+
+div#ajax {
+    height: 8em;
+    width: 25em;
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 7em;
+    left: 15em;
+    display: none;
+}

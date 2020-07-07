@@ -8,7 +8,7 @@
     <p>Gruppe anlegen</p>
     {% if user is none %}
     <div id="login">
-        <form action="login" method="post">
+        <form action="/user/login" method="post">
             Benutzername: <input type="text" name="user"/> <br />
             Passwort: <input type="password" name="password"/> <br />
             <input type="submit" value="Login" />
@@ -17,7 +17,7 @@
     {% else %}
     <div id="lists">
         <h3>{{ user.username }}</h3>
-        <h3>Charaktere <a href="/character/create">(+)</a></h3>
+        <h3>Charaktere <a id="characterCreate" href="#">(+)</a></h3>
         <table class="list">
             <tr>
                 <th>Charakter</th>
@@ -44,5 +44,25 @@
             {% endfor %}
         </table>
     </div>
+    <div id="ajax">
+        <form action="#" id="ajaxForm">
+            <input type="text" id="value" />
+            <input id="ajaxSubmit" type="submit" value="Test" />
+        </form>
+    </div>
+    <script type="text/javascript">
+        var hiddenAjax = $("#ajax");
+        $("a#characterCreate").on("click", function(event) {
+            $("#ajaxSubmit").value="Testen";
+            hiddenAjax.show();
+        });
+
+        $("#ajaxForm").submit(function(){
+            $.post("/ajax/submit", {value: $("#value").val()}, function(data) {
+                $("#ajax").html(data['value']);
+            })
+        });
+    </script>
+
     {% endif %}
 {% endblock %}
