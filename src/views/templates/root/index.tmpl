@@ -18,7 +18,7 @@
     <div id="lists">
         <h3>{{ user.username }}</h3>
         <h3>Charaktere <a id="characterCreate" href="#">(+)</a></h3>
-        <table class="list">
+        <table id="characterlist" class="list">
             <tr>
                 <th>Charakter</th>
                 <th>Gruppe</th>
@@ -56,9 +56,9 @@
         });
 
         $("#ajaxSubmit").on("click", function(event) {
-            let json = {"value": $("#value").val()};
-            $.post("/ajax/submit", {value: $("#value").val()}, function(data){
-                $("#ajax").html("We are the " + data['value']);
+            var json = {"character_name": $("#value").val()};
+            $.post("/ajax/create_character", json, function(data){
+                $("#characterlist").append('<tr><td>Test</td></tr>');
             });
         });
     </script>

@@ -1,13 +1,14 @@
 import cherrypy
 import json
 
-
+from src.controllers.character_controller import CharacterController
 from src.views.view import View
 
 
 class AjaxView(View):
     @cherrypy.expose()
-    def submit(self, value):
-        cherrypy.response.headers['Content-Type'] = 'application/json'
-        text = json.dumps(dict(value=value))
-        return text.encode('utf-8')
+    @cherrypy.tools.json_out()
+    def create_character(self, character_name):
+        character = CharacterController.create(character_name)
+        return {'id': str(character.id),
+                'charactername': character.name}
