@@ -45,22 +45,26 @@
         </table>
     </div>
     <div id="ajax">
-        <input type="text" id="value" />
-        <input id="ajaxSubmit" type="submit" value="Test" />
+        <form action="javascript:void(0)" id="ajaxForm">
+            <input type="text" id="value" />
+            <input id="ajaxSubmit" type="submit" value="Test" />
+        </form>
     </div>
     <script type="text/javascript">
+        function ajaxSubmitClick(event) {
+            var json = {"character_name": $("#value").val()};
+            $.post("/ajax/create_character", json, function(data){
+                $("#characterlist").append('<a href="/character/view?id=' + data['id'] + '">' + data['charactername'] + '</a>');
+            });
+        }
+
         var hiddenAjax = $("#ajax");
         $("a#characterCreate").on("click", function(event) {
             $("#ajaxSubmit").value="Testen";
             hiddenAjax.show();
         });
 
-        $("#ajaxSubmit").on("click", function(event) {
-            var json = {"character_name": $("#value").val()};
-            $.post("/ajax/create_character", json, function(data){
-                $("#characterlist").append('<tr><td>Test</td></tr>');
-            });
-        });
+        $("#ajaxForm").on("submit", ajaxSubmitClick);
     </script>
 
     {% endif %}
