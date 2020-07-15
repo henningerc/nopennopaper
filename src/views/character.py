@@ -3,6 +3,7 @@ from src.views.view import View
 from src.models.models import Character, User
 from src.controllers.user_management import UserManager
 from src.controllers.database_management import Database
+from src.controllers.character_controller import CharacterController
 
 
 class CharacterView(View):
@@ -27,9 +28,5 @@ class CharacterView(View):
             template = self.env.get_template("/character/create.tmpl")
             return template.render(user=user)
         if charactername is not None and charactername != "":
-            session = Database.Session()
-            user = UserManager.get_user(db_session=session)
-            character = Character(user=user, name=charactername)
-            session.add(character)
-            session.commit()
+            character = CharacterController.create(charactername)
         raise cherrypy.HTTPRedirect("/character/view?id=" + str(character.id))

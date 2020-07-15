@@ -1,0 +1,26 @@
+<html>
+<head>
+    <script type="text/javascript" src="/static/js/jquery-3.5.1.js"> </script>
+</head>
+<body>
+    <div id="ajax">
+        <input type="text" id="value" />
+        <input id="ajaxSubmit" type="submit" value="Test" />
+    </div>
+    <script type="text/javascript">
+        var hiddenAjax = $("#ajax");
+        $("a#characterCreate").on("click", function(event) {
+            $("#ajaxSubmit").value="Testen";
+            hiddenAjax.show();
+        });
+
+        $("#ajaxSubmit").on("click", function(event) {
+            var json = {"data": $("#value").val()};
+            $.post("/ajax/submit", json, function(data){
+                $("#ajax").html("We are the " + data['value']);
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -6,10 +6,19 @@
     <p><a href="user/list">Benutzerliste</a></p>
     <p><a href="user/create">Benutzer anlegen</a></p>
     <p>Gruppe anlegen</p>
+    {% if user is none %}
+    <div id="login">
+        <form action="/user/login" method="post">
+            Benutzername: <input type="text" name="user"/> <br />
+            Passwort: <input type="password" name="password"/> <br />
+            <input type="submit" value="Login" />
+        </form>
+    </div>
+    {% else %}
     <div id="lists">
         <h3>{{ user.username }}</h3>
-        <h3>Charaktere <a href="/character/create">(+)</a></h3>
-        <table class="list">
+        <h3>Charaktere <a id="characterCreate" href="#">(+)</a></h3>
+        <table id="characterlist" class="list">
             <tr>
                 <th>Charakter</th>
                 <th>Gruppe</th>
@@ -17,12 +26,12 @@
             {% for character in user.characters %}
             <tr>
                 <td>
-                    {{ character.name }}
+                    <a href="/character/view?id={{character.id}}">{{ character.name }}</a>
                 </td>
             </tr>
             {% endfor %}
         </table>
-        <h3>Gruppen (+)</h3>
+        <h3>Gruppen <a href="/group/create">(+)</a></h3>
         <table class="list">
             <tr>
                 <th>Gruppe</th>
@@ -35,4 +44,28 @@
             {% endfor %}
         </table>
     </div>
+    <div id="ajax">
+        <form action="javascript:void(0)" id="ajaxForm">
+            <input type="text" id="value" />
+            <input id="ajaxSubmit" type="submit" value="Test" />
+        </form>
+    </div>
+    <script type="text/javascript">
+        function ajaxSubmitClick(event) {
+            var json = {"character_name": $("#value").val()};
+            $.post("/ajax/create_character", json, function(data){
+                $("#characterlist").append('<a href="/character/view?id=' + data['id'] + '">' + data['charactername'] + '</a>');
+            });
+        }
+
+        var hiddenAjax = $("#ajax");
+        $("a#characterCreate").on("click", function(event) {
+            $("#ajaxSubmit").value="Testen";
+            hiddenAjax.show();
+        });
+
+        $("#ajaxForm").on("submit", ajaxSubmitClick);
+    </script>
+
+    {% endif %}
 {% endblock %}

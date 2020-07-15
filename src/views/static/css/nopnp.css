@@ -2,6 +2,11 @@ body {
     background-color: #efffee;
 }
 
+a {
+    color: #71116f;
+    text-decoration: none;
+}
+
 div#lists {
     background-color: #aaaaaa;
     padding: 0 0.5em 0.5em 0.5em;
@@ -11,10 +16,21 @@ div#lists {
 div#head {
     background-color: #000000;
     color: #ffffff;
+    padding: 0.1em 0.5em 0.1em 0.5em;
 }
 
 table.list {
     border-color: #ffffff;
     border-style: solid;
     width: 100%;
-}  
+}
+
+div#ajax {
+    height: 8em;
+    width: 25em;
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 7em;
+    left: 15em;
+    display: none;
+}
