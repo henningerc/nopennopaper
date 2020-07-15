@@ -1,0 +1,27 @@
+{% extends 'framework/base.tmpl' %}
+
+{% block title%}Charakterdaten ändern{% endblock %}
+
+{% block content%}
+<!-- TODO: Divs als Tabelle darstellen -->
+{% for header in headers %}
+<div id="{{header.id}}" class="editable head_value">
+    <div class="title">{{header.title}}</div>
+    <div class="description">{{header.description}}</div>
+    <div class="order">{{header.order}}</div>
+    <div class="standard">{{header.standard}}</div>
+</div>
+
+
+<script type="text/javascript">
+    $('div.editable').on('click', function(event) {
+        var req_item = this;
+        $.post("aj_get_head", {"head_id": req_item.id}, function(data){
+            $('div#' + data.id + '>div.order').text("<input type=\"text\" />");
+            $('div#' + data.id + '>div.title').append(data.title);
+        });
+    });
+    // TODO: SameSite-Probleme in der Java-Console zu sehen
+</script>
+{% endfor %}
+{% endblock %}

@@ -38,6 +38,8 @@ Table l_head {
   id uuid [pk]
   title varchar(255) [not null]
   description text
+  order int
+  standard boolean
 }
 
 Table c_head {

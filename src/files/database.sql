@@ -37,7 +37,9 @@ CREATE TABLE "characters" (
 CREATE TABLE "l_head" (
   "id" uuid PRIMARY KEY,
   "title" varchar(255) NOT NULL,
-  "description" text
+  "description" text,
+  "order" integer,
+  "standard" boolean
 );
 
 CREATE TABLE "c_head" (

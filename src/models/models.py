@@ -2,7 +2,7 @@ import datetime
 import uuid
 import enum
 
-from sqlalchemy import String, Column, ForeignKey, Integer, DateTime, Enum
+from sqlalchemy import String, Column, ForeignKey, Integer, DateTime, Enum, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
@@ -74,6 +74,8 @@ class LHead(Base):
     id = Column(UUID(as_uuid=True), primary_key=True)
     title = Column(String, nullable=False)
     description = Column(String)
+    order = Column(Integer)
+    standard = Column(Boolean)
 
     values = relationship('VHead', back_populates='list')
     head_fields = relationship('CHead', back_populates='list')
