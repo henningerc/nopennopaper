@@ -29,3 +29,13 @@ class ManagementView(View):
                     'description': header.description,
                     'order': header.order,
                     'standard': header.standard}
+
+    @cherrypy.expose()
+    @cherrypy.tools.json_out()
+    def aj_set_head(self, head_id=None, title=None, description=None, order=None, standard=None):
+        if head_id is not None:
+            return {'id': head_id,
+                    'title': title,
+                    'description': description,
+                    'order': order,
+                    'standard': standard}
