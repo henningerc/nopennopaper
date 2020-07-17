@@ -7,12 +7,10 @@
 <!-- TODO: Form fest um das DIV herum und dann einfach nur noch füllen ? -->
 {% for header in headers %}
     <div id="{{header.id}}" class="editable head_value">
-        <div class="show">
-            <div class="title">{{header.title}}</div>
-            <div class="description">{{header.description}}</div>
-            <div class="order">{{header.order}}</div>
-            <div class="standard">{{header.standard}}</div>
-        </div>
+        <div class="title">{{header.title}}</div>
+        <div class="description">{{header.description}}</div>
+        <div class="order">{{header.order}}</div>
+        <div class="standard">{{header.standard}}</div>
     </div>
     
 {% endfor %}
@@ -22,11 +20,22 @@
     function submitHeadForm(event) {
         var id = event.target.getAttribute("head_id");
 
-        
-
-        console.log(id);
-        console.log($('form[head_id="' + id + '"]').serialize());
-        console.log($('form[head_id="' + id + '"] input[name="title"]').val());
+        d_out = {'head_id': id,
+                'title': $('form[head_id="' + id + '"] input[name="title"]').val(),
+                'description': $('form[head_id="' + id + '"] input[name="description"]').val(),
+                'order': $('form[head_id="' + id + '"] input[name="order"]').val(),
+                'standard': ($('form[head_id="' + id + '"] input[name="standard"]').is(':checked')? true: false)}
+        console.log(d_out);
+        $.post('aj_set_head', d_out, function(d_in){
+            var showData = '<div class="title">' + d_in.title + '</div>' +
+                '<div class="description">' + d_in.description + '</div>' +
+                '<div class="order">' + d_in.order + '</div>' +
+                '<div class="standard">' + d_in.standard + '</div>';
+            var div = $('div#' + d_in.id);
+            console.log(showData);
+            div.html(showData);
+            div.on('click', showHeadForm);
+        });
     }
 
     function showHeadForm(event) {
