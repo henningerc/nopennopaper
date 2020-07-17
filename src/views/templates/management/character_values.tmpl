@@ -7,22 +7,34 @@
 <!-- TODO: Form fest um das DIV herum und dann einfach nur noch füllen ? -->
 {% for header in headers %}
     <div id="{{header.id}}" class="editable head_value">
-        <div class="title">{{header.title}}</div>
-        <div class="description">{{header.description}}</div>
-        <div class="order">{{header.order}}</div>
-        <div class="standard">{{header.standard}}</div>
+        <div class="show">
+            <div class="title">{{header.title}}</div>
+            <div class="description">{{header.description}}</div>
+            <div class="order">{{header.order}}</div>
+            <div class="standard">{{header.standard}}</div>
+        </div>
     </div>
     
 {% endfor %}
 
 
 <script type="text/javascript">
-    $('div.editable').on('click', function(event) {
+    function submitHeadForm(event) {
+        var id = event.target.getAttribute("head_id");
+
+        
+
+        console.log(id);
+        console.log($('form[head_id="' + id + '"]').serialize());
+        console.log($('form[head_id="' + id + '"] input[name="title"]').val());
+    }
+
+    function showHeadForm(event) {
         var req_item = this;
         $.post('aj_get_head', {'head_id': req_item.id}, function(data){
-            var formular = '<form action="javascript:void(0)" class="input">\n' +
+            var formular = '<form action="javascript:void(0)" class="input" head_id="' + data.id + '">\n' +
                 '<input type="hidden" name="head_id" value="' + data.id + '" />\n' +                
-                '<div class="title"><input name="title" type="text" value="' + data.title + '" /></div>\n' + 
+                '<div class="title"><input class="title" name="title" type="text" value="' + data.title + '" /></div>\n' + 
                 '<div class="description"><input name="description" type="text" value="' + data.description + '" /></div>\n' +
                 '<div class="order"><input name="order" type="number" value="' + data.order + '" /></div>\n' + 
                 '<div class="standard"><input name="standard" type="checkbox"' + (data.standard?' checked':'') + ' /></div>\n' +
@@ -30,8 +42,13 @@
                 '</form>';
             $('div#' + data.id).off('click');
             $('div#' + data.id).html(formular);
+            $('div#' + data.id + '>form').submit(submitHeadForm);
         });
+    }
+    $('form.input').submit(function(event){
+        
     });
+    $('div.editable').on('click', showHeadForm);
     // TODO: SameSite-Probleme in der Java-Console zu sehen
 </script>
 {% endblock %}

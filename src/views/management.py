@@ -33,6 +33,7 @@ class ManagementView(View):
     @cherrypy.expose()
     @cherrypy.tools.json_out()
     def aj_set_head(self, head_id=None, title=None, description=None, order=None, standard=None):
+        # TODO: Benutzerabfrage zufügen
         if head_id is not None:
             return {'id': head_id,
                     'title': title,
