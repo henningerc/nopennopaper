@@ -12,9 +12,9 @@
         <div class="order">{{header.order}}</div>
         <div class="standard">{{header.standard}}</div>
     </div>
-    
 {% endfor %}
-
+<!-- TODO: Bild suchen -->
+<a href="javascript:void(0)" id="new_head">(+)</a>
 
 <script type="text/javascript">
     function submitHeadForm(event) {
@@ -54,9 +54,11 @@
             $('div#' + data.id + '>form').submit(submitHeadForm);
         });
     }
-    $('form.input').submit(function(event){
-        
+
+    $('a#new_head').on('click', function(event){
+        event.target.before().html("<div>Hallo</div>");
     });
+
     $('div.editable').on('click', showHeadForm);
     // TODO: SameSite-Probleme in der Java-Console zu sehen
 </script>
