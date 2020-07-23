@@ -56,7 +56,8 @@
     }
 
     $('a#new_head').on('click', function(event){
-        event.target.before().html("<div>Hallo</div>");
+        console.log("test");
+        $('div#content').append("<div>Test</div>");
     });
 
     $('div.editable').on('click', showHeadForm);

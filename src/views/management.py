@@ -3,6 +3,7 @@ import cherrypy
 from src.views.view import View
 from src.controllers.database_management import Database
 from src.controllers.user_management import UserManager
+from src.controllers.management_controller import ManagementController
 from src.models.models import LHead
 
 
@@ -50,3 +51,7 @@ class ManagementView(View):
                     'description': head.description,
                     'order': head.order,
                     'standard': head.standard}
+
+    @cherrypy.expose()
+    def create_heads(self):
+        ManagementController.create_standard_heads()

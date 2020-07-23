@@ -20,7 +20,7 @@ class Playerrole(enum.Enum):
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     login = Column(String, nullable=False)
     username = Column(String, nullable=False)
     email = Column(String, nullable=False)
@@ -40,14 +40,14 @@ class User(Base):
 class Group(Base):
     __tablename__ = 'groups'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String)
 
 
 class MUserGroup(Base):
     __tablename__ = 'm_users_groups'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     group_id = Column(UUID(as_uuid=True), ForeignKey('groups.id'), nullable=False)
     role = Column(Enum(Playerrole), nullable=False)
@@ -59,7 +59,7 @@ class MUserGroup(Base):
 class Character(Base):
     __tablename__ = 'characters'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     group_id = Column(UUID(as_uuid=True), ForeignKey('groups.id'))
     name = Column(String)
@@ -71,7 +71,7 @@ class Character(Base):
 class LHead(Base):
     __tablename__ = 'l_head'
 
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String)
     order = Column(Integer)
