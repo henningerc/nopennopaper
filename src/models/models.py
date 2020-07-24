@@ -101,3 +101,11 @@ class CHead(Base):
 
     list = relationship('LHead', back_populates='head_fields')
 
+
+class LAttribute(Base):
+    __tablename__ = 'l_attributes'
+
+    # TODO: Order, Standard, Kürzel
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    title = Column(String, nullable=False)
+    description = Column(String)

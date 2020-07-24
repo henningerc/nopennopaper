@@ -12,6 +12,7 @@ from src.controllers.installer import Installer
 class NoPnP:
     install: bool = False
     install_heads: bool = False
+    install_attributes: bool = False
 
     def __init__(self, arguments=None):
         configfile = 'nopnp.conf'
@@ -26,6 +27,8 @@ class NoPnP:
                         self.install = True
                     elif arg == '--install_heads':
                         self.install_heads = True
+                    elif arg == '--install_attributes':
+                        self.install_attributes = True
                 elif status == 'c':
                     configfile = arg
                     status = 'n'
@@ -45,6 +48,8 @@ class NoPnP:
         else:
             if self.install_heads:
                 Installer.create_standard_heads()
+            if self.install_attributes:
+                Installer.create_standard_attributes()
 
         conf = {
             '/static': {
