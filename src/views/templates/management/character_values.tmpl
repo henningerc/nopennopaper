@@ -5,16 +5,23 @@
 {% block content%}
 <!-- TODO: Divs als Tabelle darstellen -->
 <!-- TODO: Form fest um das DIV herum und dann einfach nur noch füllen ? -->
-<div id="headers">
+<table id="headers">
+    <tr>
+        <th class="title">Bezeichnung</th>
+        <th class="description">Beschreibung</th>
+        <th class="order">Reihenfolge</th>
+        <th class="standard">Standard</th>
+    </tr>
 {% for header in headers %}
-    <div id="{{header.id}}" class="editable head_value">
-        <div class="title">{{header.title}}</div>
-        <div class="description">{{header.description}}</div>
-        <div class="order">{{header.order}}</div>
-        <div class="standard">{{header.standard}}</div>
-    </div>
+    <tr id="{{header.id}}" class="editable head_value">
+        <td class="title">{{header.title}}</td>
+        <td class="description">{{header.description}}</td>
+        <td class="order">{{header.order}}</td>
+        <td class="standard">{{header.standard}}</td>
+    </tr>
 {% endfor %}
-</div>
+
+</table>
 <!-- TODO: Bild suchen -->
 <a href="javascript:void(0)" id="new_head">(+)</a>
 
