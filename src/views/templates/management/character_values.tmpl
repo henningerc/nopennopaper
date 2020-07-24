@@ -19,6 +19,17 @@
 <a href="javascript:void(0)" id="new_head">(+)</a>
 
 <script type="text/javascript">
+    // TODO: Löschen-Button so einrichten, dass er von sich aus nicht submitted
+    function click_delete(event) {
+        var d_out = {'head_id': event.target.getAttribute("head_id")};
+        $.post('aj_delete_head', d_out, function(d_in){
+            if(d_in.deleted){
+                $('div#' + d_in.id).remove()
+            }
+        });
+        event.preventDefault();
+    }
+
     function submitHeadForm(event) {
         var id = event.target.getAttribute("head_id");
 
@@ -27,7 +38,6 @@
                 'description': $('form[head_id="' + id + '"] input[name="description"]').val(),
                 'order': $('form[head_id="' + id + '"] input[name="order"]').val(),
                 'standard': ($('form[head_id="' + id + '"] input[name="standard"]').is(':checked')? true: false)}
-        console.log(d_out);
         $.post('aj_set_head', d_out, function(d_in){
             if(id=="new") {
                 var new_div = '<div id="' + d_in.id +'"></div>';
@@ -39,7 +49,6 @@
                 '<div class="order">' + d_in.order + '</div>' +
                 '<div class="standard">' + d_in.standard + '</div>';
             var div = $('div#' + d_in.id);
-            console.log(showData);
             div.html(showData);
             div.on('click', showHeadForm);
         });
@@ -54,11 +63,13 @@
                 '<div class="description"><input name="description" type="text" value="' + data.description + '" /></div>\n' +
                 '<div class="order"><input name="order" type="number" value="' + data.order + '" /></div>\n' + 
                 '<div class="standard"><input name="standard" type="checkbox"' + (data.standard?' checked':'') + ' /></div>\n' +
-                '<div class="actions"><input name="submit" type="submit" value="speichern" /></div>\n' +
+                '<div class="actions"><input name="submit" type="submit" value="speichern" />\n' +
+                '<button class="delete" head_id="' + data.id + '">löschen</button></div>\n' +
                 '</form>';
             $('div#' + data.id).off('click');
             $('div#' + data.id).html(formular);
             $('div#' + data.id + '>form').submit(submitHeadForm);
+            $('div#' + data.id + '>form button.delete').on('click', click_delete);
         });
     }
 

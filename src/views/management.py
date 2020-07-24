@@ -59,3 +59,9 @@ class ManagementView(View):
     @cherrypy.expose()
     def create_heads(self):
         ManagementController.create_standard_heads()
+
+    @cherrypy.expose()
+    @cherrypy.tools.json_out()
+    def aj_delete_head(self, head_id=None):
+        if head_id is not None:
+            return ManagementController.delete_head(head_id)

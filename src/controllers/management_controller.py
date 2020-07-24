@@ -23,3 +23,13 @@ class ManagementController:
             ManagementController.create_head(db_session, 'Geburtstag', 'Der Tag an dem der Character geboren wurde', 2,
                                              True)
         raise cherrypy.HTTPRedirect("/")
+
+    @staticmethod
+    def delete_head(id):
+        db_session = Database.Session()
+        user = UserManager.get_user(False)
+        if user is not None and user.is_admin():
+            head: LHead = db_session.query(LHead).filter_by(id=id).delete()
+            db_session.commit()
+            return {'id': id, 'deleted': True}
+        return {'id': id, 'deleted': False}
