@@ -20,7 +20,7 @@
         <td class="title">{{header.title}}</td>
         <td class="description">{{header.description}}</td>
         <td class="order">{{header.order}}</td>
-        <td class="standard">{{header.standard}}</td>
+        <td class="standard">{% if header.standard %}&check;{% else %}x{% endif %}</td>
         <td class="buttons"></td>
     </tr>
 {% endfor %}
@@ -28,6 +28,5 @@
 <!-- TODO: Bild suchen -->
 <a href="javascript:void(0)" id="new_head">(+)</a>
 
-<script type="text/javascript" src="/static/js/management.js">
-</script>
+<script type="text/javascript" src="/static/js/management.js"></script>
 {% endblock %}

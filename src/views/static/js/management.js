@@ -31,7 +31,7 @@
             $('tr#' + d_in.id + ' td.title').text(d_in.title);
             $('tr#' + d_in.id + ' td.description').text(d_in.description);
             $('tr#' + d_in.id + ' td.order').text(d_in.order);
-            $('tr#' + d_in.id + ' td.standard').text(d_in.standard);
+            $('tr#' + d_in.id + ' td.standard').html(d_in.standard?'&check;':'x');
             $('tr#' + d_in.id + ' td.buttons').text('');
             $('tr#' + d_in.id).on('click', showHeadForm);
 
