@@ -1,4 +1,5 @@
 import os
+import sys
 
 import configparser
 import cherrypy
@@ -9,16 +10,25 @@ from src.controllers.installer import Installer
 
 
 class NoPnP:
+    install: bool = False
+    install_heads: bool = False
+
     def __init__(self, arguments=None):
         configfile = 'nopnp.conf'
+
         if arguments is not None:
             status = 'n'
             for arg in arguments:
                 if status == 'n':
                     if arg == '-c':
                         status = 'c'
+                    elif arg == '--install':
+                        self.install = True
+                    elif arg == '--install_heads':
+                        self.install_heads = True
                 elif status == 'c':
                     configfile = arg
+                    status = 'n'
 
         self.config = self.load_config(configfile)
 
@@ -30,7 +40,12 @@ class NoPnP:
 
     def startup(self):
         Database(self.config['Database'])
-        Installer.install()
+        if self.install:
+            Installer.install()
+        else:
+            if self.install_heads:
+                Installer.create_standard_heads()
+
         conf = {
             '/static': {
                 'tools.staticdir.on': True,
@@ -46,5 +61,5 @@ class NoPnP:
         cherrypy.engine.block()
 
 
-application = NoPnP()
+application = NoPnP(sys.argv)
 application.startup()
