@@ -44,7 +44,7 @@ td.title, td.description, td.order, td.standard, th.title, th.description, th.or
     padding: 0 0.5em 0 0.5em;
 }
 
-table#headers tr:nth-child(2n+1) {
+table tr:nth-child(2n+1) {
     background-color: #dcdcd0;
 }
 
@@ -52,11 +52,11 @@ td.order, td.standard{
     text-align: center;
 }
 
-table#headers tr:nth-child(2n) {
+table tr:nth-child(2n) {
     background-color: #b0c0c0;
 }
 
-table#headers tr:nth-child(1) {
+table tr:nth-child(1) {
     background-color: inherit;
 }
 

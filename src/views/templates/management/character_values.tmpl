@@ -3,6 +3,23 @@
 {% block title%}Charakterdaten ändern{% endblock %}
 
 {% block content%}
+<div><h2>Attribute</h2></div>
+<table id="attributes">
+    <tr>
+        <th class="title">Titel</th>
+        <th class="description">Beschreibung</th>
+        <th class="buttons"></th>
+    </tr>
+    {% for att in attributes %}
+    <tr id="{{att.id}}" class="attribute">
+        <td class="title">{{att.title}}</td>
+        <td class="description">{{att.description}}</td>
+        <td class="buttons"></td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="javascript:void(0)" id="new_attribute">(+)</a>
+
 <div><h2>Kopfdaten</h2>
 <!--a href="create_heads">(Standards einfügen)</a--></div>
 <table id="headers">
@@ -14,7 +31,7 @@
         <th class="buttons"></th>
     </tr>
 {% for header in headers %}
-    <tr id="{{header.id}}" class="editable head_value">
+    <tr id="{{header.id}}" class="head_value">
         <td class="title">{{header.title}}</td>
         <td class="description">{{header.description}}</td>
         <td class="order">{{header.order}}</td>
@@ -23,6 +40,7 @@
     </tr>
 {% endfor %}
 </table>
+
 <!-- TODO: Bild suchen -->
 <a href="javascript:void(0)" id="new_head">(+)</a>
 
