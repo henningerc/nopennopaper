@@ -33,3 +33,23 @@ class ManagementController:
             db_session.commit()
             return {'id': id, 'deleted': True}
         return {'id': id, 'deleted': False}
+
+    @staticmethod
+    def set_head(db_session, head_id, title, description, order, standard):
+        head = db_session.query(LHead).filter_by(id=head_id).one()
+        head.title = title
+        head.description = description
+        if standard == "true":
+            head.standard = True
+        else:
+            head.standard = False
+        head.order = order
+        db_session.commit()
+        return head
+
+    @staticmethod
+    def set_or_create_head(db_session, head_id=None, title=None, description=None, order=None, standard=None):
+        if head_id == "new":
+            return ManagementController.create_head(db_session, title, description, order, standard == 'true')
+        else:
+            return ManagementController.set_head(db_session, head_id, title, description, order, standard)

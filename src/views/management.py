@@ -11,50 +11,40 @@ class ManagementView(View):
     @cherrypy.expose()
     def index(self):
         db_session = Database.Session()
-        # TODO: Benutzerabfrage zufügen
-        # user = UserManager.get_user(db_session=db_session)
-        # if user.is_admin():
-        headers = db_session.query(LHead).order_by("order").all()
-        template = self.env.get_template('management/character_values.tmpl')
-        return template.render(headers=headers)
+        user = UserManager.get_user(db_session=db_session)
+        if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
+            headers = db_session.query(LHead).order_by("order").all()
+            template = self.env.get_template('management/character_values.tmpl')
+            return template.render(headers=headers)
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
     def aj_get_head(self, head_id=None):
         if head_id is not None:
-            # TODO: Benutzerabfrage zufügen
             db_session = Database.Session()
-            header: LHead = db_session.query(LHead).filter_by(id=head_id).one()
-            return {'id': str(header.id),
-                    'title': header.title,
-                    'description': header.description,
-                    'order': header.order,
-                    'standard': header.standard}
+            user = UserManager.get_user(db_session=db_session)
+            if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
+                header: LHead = db_session.query(LHead).filter_by(id=head_id).one()
+                return {'id': str(header.id),
+                        'title': header.title,
+                        'description': header.description,
+                        'order': header.order,
+                        'standard': header.standard}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
     def aj_set_head(self, head_id=None, title=None, description=None, order=None, standard=None):
-        # TODO: Benutzerabfrage zufügen
         if head_id is not None:
-            head: LHead
             db_session = Database.Session()
-            if head_id == "new":
-                head = ManagementController.create_head(db_session, title, description, order, standard == 'true')
-            else:
-                head = db_session.query(LHead).filter_by(id=head_id).one()
-                head.title = title
-                head.description = description
-                if standard == "true":
-                    head.standard = True
-                else:
-                    head.standard = False
-                head.order = order
-                db_session.commit()
-            return {'id': str(head.id),
-                    'title': head.title,
-                    'description': head.description,
-                    'order': head.order,
-                    'standard': head.standard}
+            user = UserManager.get_user(db_session=db_session)
+            if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
+                head: LHead = ManagementController.set_or_create_head(db_session, head_id, title, description, order,
+                                                                      standard)
+                return {'id': str(head.id),
+                        'title': head.title,
+                        'description': head.description,
+                        'order': head.order,
+                        'standard': head.standard}
 
     @cherrypy.expose()
     def create_heads(self):
