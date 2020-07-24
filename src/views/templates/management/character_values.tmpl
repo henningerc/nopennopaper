@@ -3,16 +3,14 @@
 {% block title%}Charakterdaten ändern{% endblock %}
 
 {% block content%}
-<!-- TODO: Divs als Tabelle darstellen -->
-<!-- TODO: Form fest um das DIV herum und dann einfach nur noch füllen ? -->
+<div><h2>Kopfdaten</h2>
+<!--a href="create_heads">(Standards einfügen)</a--></div>
 <table id="headers">
     <tr>
-        <th class="title">Bezeichnung</th>
+        <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
-        <!-- TODO: Bei Reihenfolge und Standard uU einen Hint und verkürzen -->
-        <th class="order">Reihenfolge</th>
-        <!-- TODO: Standard als Symbole, nicht als True/False -->
-        <th class="standard">Standard</th>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
         <th class="buttons"></th>
     </tr>
 {% for header in headers %}
