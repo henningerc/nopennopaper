@@ -36,16 +36,20 @@ class ManagementView(View):
     def aj_set_head(self, head_id=None, title=None, description=None, order=None, standard=None):
         # TODO: Benutzerabfrage zufügen
         if head_id is not None:
+            head: LHead
             db_session = Database.Session()
-            head: LHead = db_session.query(LHead).filter_by(id=head_id).one()
-            head.title = title
-            head.description = description
-            if standard == "true":
-                head.standard = True
+            if head_id == "new":
+                head = ManagementController.create_head(db_session, title, description, order, standard == 'true')
             else:
-                head.standard = False
-            head.order = order
-            db_session.commit()
+                head = db_session.query(LHead).filter_by(id=head_id).one()
+                head.title = title
+                head.description = description
+                if standard == "true":
+                    head.standard = True
+                else:
+                    head.standard = False
+                head.order = order
+                db_session.commit()
             return {'id': str(head.id),
                     'title': head.title,
                     'description': head.description,

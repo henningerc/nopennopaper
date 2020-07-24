@@ -11,6 +11,7 @@ class ManagementController:
         head = LHead(title=title, description=description, order=order, standard=standard)
         db_session.add(head)
         db_session.commit()
+        return head
 
     @staticmethod
     def create_standard_heads():

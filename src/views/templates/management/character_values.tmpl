@@ -5,6 +5,7 @@
 {% block content%}
 <!-- TODO: Divs als Tabelle darstellen -->
 <!-- TODO: Form fest um das DIV herum und dann einfach nur noch füllen ? -->
+<div id="headers">
 {% for header in headers %}
     <div id="{{header.id}}" class="editable head_value">
         <div class="title">{{header.title}}</div>
@@ -13,6 +14,7 @@
         <div class="standard">{{header.standard}}</div>
     </div>
 {% endfor %}
+</div>
 <!-- TODO: Bild suchen -->
 <a href="javascript:void(0)" id="new_head">(+)</a>
 
@@ -27,6 +29,11 @@
                 'standard': ($('form[head_id="' + id + '"] input[name="standard"]').is(':checked')? true: false)}
         console.log(d_out);
         $.post('aj_set_head', d_out, function(d_in){
+            if(id=="new") {
+                var new_div = '<div id="' + d_in.id +'"></div>';
+                $('div#headers').append(new_div);
+                $('div#new_header').remove();
+            }
             var showData = '<div class="title">' + d_in.title + '</div>' +
                 '<div class="description">' + d_in.description + '</div>' +
                 '<div class="order">' + d_in.order + '</div>' +
@@ -56,8 +63,18 @@
     }
 
     $('a#new_head').on('click', function(event){
-        console.log("test");
-        $('div#content').append("<div>Test</div>");
+        var formular = '<div id="new_header">\n' +
+                '<form action="javascript:void(0)" class="input" head_id="new">\n' +
+                '<input type="hidden" name="head_id" value="new" />\n' +
+                '<div class="title"><input class="title" name="title" type="text" value="Bezeichnung" /></div>\n' +
+                '<div class="description"><input name="description" type="text" value="Beschreibung" /></div>\n' +
+                '<div class="order"><input name="order" type="number" value="0" /></div>\n' +
+                '<div class="standard"><input name="standard" type="checkbox" checked/></div>\n' +
+                '<div class="actions"><input name="submit" type="submit" value="speichern" /></div>\n' +
+                '</form>\n' +
+                '</div>';
+        $('div#headers').append(formular);
+        $('div#new_header>form').submit(submitHeadForm);
     });
 
     $('div.editable').on('click', showHeadForm);
