@@ -8,12 +8,18 @@
     <tr>
         <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
+        <th class="short">Kurz</th>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
         <th class="buttons"></th>
     </tr>
     {% for att in attributes %}
     <tr id="{{att.id}}" class="attribute">
         <td class="title">{{att.title}}</td>
         <td class="description">{{att.description}}</td>
+        <td class="short">{{att.short}}</td>
+        <td class="order">{{att.order}}</td>
+        <td class="standard">{% if att.standard %}&check;{% else %}x{% endif %}</td>
         <td class="buttons"></td>
     </tr>
     {% endfor %}

@@ -63,3 +63,6 @@ table.alter tr:nth-child(1) {
 input.order {
     width: 4em;
 }
+td.buttons {
+    width: 2em;
+}
