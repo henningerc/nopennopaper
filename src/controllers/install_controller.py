@@ -8,9 +8,10 @@ class InstallController:
     @staticmethod
     def install():
         if not UserManager.exists('root'):
-            UserManager.create(login='root', username='root', email='root@root.lan', password='root')
+            UserManager.create(login='root', username='root', email='root@root.lan', password='root', role=10)
         InstallController.create_standard_heads()
         InstallController.create_standard_attributes()
+        InstallController.create_standard_skills()
 
     @staticmethod
     def create_standard_heads():
@@ -39,34 +40,38 @@ class InstallController:
 
     @staticmethod
     def create_standard_attributes():
+        order = 0
         db_session = Database.Session()
         attributes = [
-            {'title': 'Mut', 'description': 'MU'},
-            {'title': 'Klugheit', 'description': 'KL'},
-            {'title': 'Intuition', 'description': 'IN'},
-            {'title': 'Charisma', 'description': 'CH'},
-            {'title': 'Fingerfertigkeit', 'description': 'FF'},
-            {'title': 'Gewandtheit', 'description': 'GE'},
-            {'title': 'Konstitution', 'description': 'KO'},
-            {'title': 'Körperkraft', 'description': 'KK'},
+            {'t': 'Mut', 's': 'MU', 'd': ''},
+            {'t': 'Klugheit', 's': 'KL', 'd': ''},
+            {'t': 'Intuition', 's': 'IN', 'd': ''},
+            {'t': 'Charisma', 's': 'CH', 'd': ''},
+            {'t': 'Fingerfertigkeit', 's': 'FF', 'd': ''},
+            {'t': 'Gewandtheit', 's': 'GE', 'd': ''},
+            {'t': 'Konstitution', 's': 'KO', 'd': ''},
+            {'t': 'Körperkraft', 's': 'KK', 'd': ''},
         ]
         for a in attributes:
-            attribute = LAttribute(title=a['title'], description=a['description'])
+            attribute = LAttribute(title=a['t'], description=a['d'], short=a['s'], order=order, standard=True)
             db_session.add(attribute)
+            order += 1
         db_session.commit()
 
     @staticmethod
     def create_standard_skills():
+        order = 0
         attributes = {}
         db_session = Database.Session()
         q_attributes = db_session.query(LAttribute).all()
         for qa in q_attributes:
-            attributes[qa.description] = qa
+            attributes[qa.short] = qa
         skills = [
             {'t': 'Fliegen', 'd': '', 'a1': 'MU', 'a2': 'IN', 'a3': 'GE'},
         ]
         for s in skills:
             skill = LSkill(title=s['t'], description=s['d'], attribute_1=attributes[s['a1']],
-                           attribute_2=attributes[s['a2']], attribute_3=attributes[s['a3']])
+                           attribute_2=attributes[s['a2']], attribute_3=attributes[s['a3']], order=order, standard=True)
             db_session.add(skill)
+            order += 1
         db_session.commit()

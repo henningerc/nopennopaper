@@ -59,6 +59,9 @@ Table l_attributes {
   id uuid [pk]
   title varchar(255) [not null]
   description text
+  short varchar(5) [not null]
+  order int
+  standard boolean
 }
 
 Table c_attributes {
@@ -72,6 +75,7 @@ Table l_advantages {
   id uuid [pk]
   title varchar(255) [not null, unique]
   description text
+  order int
 }
 
 Table c_advantages {
@@ -106,6 +110,8 @@ Table l_skills {
   attribute_1_id uuid [not null, ref: > l_attributes.id]
   attribute_2_id uuid [not null, ref: > l_attributes.id]
   attribute_3_id uuid [not null, ref: > l_attributes.id]
+  order int
+  standard boolean
 }
 
 Table c_skills {
@@ -119,6 +125,7 @@ Table l_languages {
   id uuid [pk]
   title varchar(255) [not null, unique]
   description text
+  order int
 }
 
 Table c_languages {
@@ -132,6 +139,7 @@ Table l_scripts {
   id uuid [pk]
   title varchar(255) [not null, unique]
   description text
+  order int
 }
 
 Table c_scripts {

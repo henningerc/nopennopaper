@@ -109,6 +109,9 @@ class LAttribute(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String)
+    short = Column(String, nullable=False)
+    order = Column(Integer)
+    standard = Column(Boolean)
 
 
 class LSkill(Base):
@@ -119,6 +122,8 @@ class LSkill(Base):
     attribute_1_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'), nullable=False)
     attribute_2_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'), nullable=False)
     attribute_3_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'), nullable=False)
+    order = Column(Integer)
+    standard = Column(Boolean)
 
     attribute_1 = relationship('LAttribute', foreign_keys='LSkill.attribute_1_id')
     attribute_2 = relationship('LAttribute', foreign_keys='LSkill.attribute_2_id')
