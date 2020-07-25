@@ -3,8 +3,8 @@
 {% block title%}Charakterdaten ändern{% endblock %}
 
 {% block content%}
-<div><h2>Attribute</h2></div>
-<table id="attributes">
+<div><h2>Eigenschaften</h2></div>
+<table id="attributes" class="alter">
     <tr>
         <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
@@ -22,7 +22,7 @@
 
 <div><h2>Kopfdaten</h2>
 <!--a href="create_heads">(Standards einfügen)</a--></div>
-<table id="headers">
+<table id="headers" class="alter">
     <tr>
         <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
@@ -40,9 +40,31 @@
     </tr>
 {% endfor %}
 </table>
-
 <!-- TODO: Bild suchen -->
 <a href="javascript:void(0)" id="new_head">(+)</a>
+
+
+<div><h2>Fertigkeiten</h2></div>
+<table id="skills" class="alter">
+    <tr>
+        <th class="title">Titel</th>
+        <th class="description">Beschreibung</th>
+        <th class="attribute_1">E1</th>
+        <th class="attribute_2">E2</th>
+        <th class="attribute_3">E3</th>
+        <td class="buttons"></td>
+    </tr>
+    {% for skill in skills %}
+    <tr id="{{skill.id}}">
+        <td class="title">{{skill.title}}</td>
+        <td class="description">{{skill.description}}</td>
+        <td class="attribute_1">{{skill.attribute_1.description}}</td>
+        <td class="attribute_2">{{skill.attribute_2.description}}</td>
+        <td class="attribute_3">{{skill.attribute_3.description}}</td>
+        <td class="buttons"></td>
+    </tr>
+    {% endfor %}
+</table>
 
 <script type="text/javascript" src="/static/js/management.js"></script>
 {% endblock %}

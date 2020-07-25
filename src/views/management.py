@@ -4,7 +4,7 @@ from src.views.view import View
 from src.controllers.database_management import Database
 from src.controllers.user_management import UserManager
 from src.controllers.management_controller import ManagementController
-from src.models.models import LHead, LAttribute
+from src.models.models import LHead, LAttribute, LSkill
 
 
 class ManagementView(View):
@@ -16,8 +16,9 @@ class ManagementView(View):
             headers = db_session.query(LHead).order_by("order").all()
             # TODO: Sortierung
             attributes = db_session.query(LAttribute).all()
+            skills = db_session.query(LSkill).all()
             template = self.env.get_template('management/character_values.tmpl')
-            return template.render(headers=headers, attributes=attributes)
+            return template.render(headers=headers, attributes=attributes, skills=skills)
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
