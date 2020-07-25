@@ -6,7 +6,7 @@ import cherrypy
 
 from src.views.root import RootView
 from src.controllers.database_management import Database
-from src.controllers.installer import Installer
+from src.controllers.install_controller import InstallController
 
 
 class NoPnP:
@@ -44,12 +44,12 @@ class NoPnP:
     def startup(self):
         Database(self.config['Database'])
         if self.install:
-            Installer.install()
+            InstallController.install()
         else:
             if self.install_heads:
-                Installer.create_standard_heads()
+                InstallController.create_standard_heads()
             if self.install_attributes:
-                Installer.create_standard_attributes()
+                InstallController.create_standard_attributes()
 
         conf = {
             '/static': {

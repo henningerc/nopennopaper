@@ -4,13 +4,13 @@ from src.controllers.database_management import Database
 from src.models.models import LAttribute
 
 
-class Installer:
+class InstallController:
     @staticmethod
     def install():
         if not UserManager.exists('root'):
             UserManager.create(login='root', username='root', email='root@root.lan', password='root')
-        Installer.create_standard_heads()
-        Installer.create_standard_attributes()
+        InstallController.create_standard_heads()
+        InstallController.create_standard_attributes()
 
     @staticmethod
     def create_standard_heads():
