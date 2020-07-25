@@ -120,6 +120,6 @@ class LSkill(Base):
     attribute_2_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'), nullable=False)
     attribute_3_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'), nullable=False)
 
-    attribute_1 = relationship('LAttribute', foreign_key='attribute_1_id')
-    attribute_2 = relationship('LAttribute', foreign_key='attribute_2_id')
-    attribute_3 = relationship('LAttribute', foreign_key='attribute_3_id')
+    attribute_1 = relationship('LAttribute', foreign_keys='LSkill.attribute_1_id')
+    attribute_2 = relationship('LAttribute', foreign_keys='LSkill.attribute_2_id')
+    attribute_3 = relationship('LAttribute', foreign_keys='LSkill.attribute_3_id')

@@ -13,6 +13,7 @@ class NoPnP:
     install: bool = False
     install_heads: bool = False
     install_attributes: bool = False
+    install_skills: bool = False
 
     def __init__(self, arguments=None):
         configfile = 'nopnp.conf'
@@ -29,6 +30,8 @@ class NoPnP:
                         self.install_heads = True
                     elif arg == '--install_attributes':
                         self.install_attributes = True
+                    elif arg == '--install_skills':
+                        self.install_skills = True
                 elif status == 'c':
                     configfile = arg
                     status = 'n'
@@ -50,6 +53,8 @@ class NoPnP:
                 InstallController.create_standard_heads()
             if self.install_attributes:
                 InstallController.create_standard_attributes()
+            if self.install_skills:
+                InstallController.create_standard_skills()
 
         conf = {
             '/static': {

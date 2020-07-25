@@ -1,7 +1,7 @@
 from src.controllers.user_management import UserManager
 from src.controllers.management_controller import ManagementController
 from src.controllers.database_management import Database
-from src.models.models import LAttribute
+from src.models.models import LAttribute, LSkill
 
 
 class InstallController:
@@ -53,4 +53,20 @@ class InstallController:
         for a in attributes:
             attribute = LAttribute(title=a['title'], description=a['description'])
             db_session.add(attribute)
+        db_session.commit()
+
+    @staticmethod
+    def create_standard_skills():
+        attributes = {}
+        db_session = Database.Session()
+        q_attributes = db_session.query(LAttribute).all()
+        for qa in q_attributes:
+            attributes[qa.description] = qa
+        skills = [
+            {'t': 'Fliegen', 'd': '', 'a1': 'MU', 'a2': 'IN', 'a3': 'GE'},
+        ]
+        for s in skills:
+            skill = LSkill(title=s['t'], description=s['d'], attribute_1=attributes[s['a1']],
+                           attribute_2=attributes[s['a2']], attribute_3=attributes[s['a3']])
+            db_session.add(skill)
         db_session.commit()
