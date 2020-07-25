@@ -41,7 +41,7 @@ div.head_value {
 }
 
 td.title, td.description, td.order, td.standard, th.title, th.description, th.order, th.standard {
-    padding: 0 0.5em 0 0.5em;
+    padding: 0.3em 0.5em 0.3em 0.5em;
 }
 
 table.alter tr:nth-child(2n+1) {
@@ -62,4 +62,7 @@ table.alter tr:nth-child(1) {
 
 input.order {
     width: 4em;
+}
+td.buttons {
+    width: 2em;
 }

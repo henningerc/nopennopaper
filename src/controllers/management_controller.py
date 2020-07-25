@@ -44,26 +44,30 @@ class ManagementController:
             return ManagementController.set_head(db_session, head_id, title, description, order, standard)
 
     @staticmethod
-    def set_attribute(db_session, att_id, title, description):
+    def set_attribute(db_session, att_id, title, description, short, order, standard):
         attribute: LAttribute = db_session.query(LAttribute).filter_by(id=att_id).one()
         attribute.title = title
         attribute.description = description
+        attribute.short = short
+        attribute.order = order
+        attribute.standard = standard
         db_session.commit()
         return attribute
 
     @staticmethod
-    def create_attribute(db_session, title, description):
-        attribute = LAttribute(title=title, description=description)
+    def create_attribute(db_session, title, description, short, order, standard):
+        attribute = LAttribute(title=title, description=description, short=short, order=order, standard=standard)
         db_session.add(attribute)
         db_session.commit()
         return attribute
 
     @staticmethod
-    def set_or_create_attribute(db_session, att_id=None, title=None, description=None) -> LAttribute:
+    def set_or_create_attribute(db_session, att_id=None, title=None, description=None, short=None, order=None,
+                                standard=None) -> LAttribute:
         if att_id == 'new_attribute':
-            return ManagementController.create_attribute(db_session, title, description)
+            return ManagementController.create_attribute(db_session, title, description, short, order, standard)
         else:
-            return ManagementController.set_attribute(db_session, att_id, title, description)
+            return ManagementController.set_attribute(db_session, att_id, title, description, short, order, standard)
 
     @staticmethod
     def delete_attribute(id):

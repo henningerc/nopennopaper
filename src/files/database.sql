@@ -58,7 +58,10 @@ CREATE TABLE "v_head" (
 CREATE TABLE "l_attributes" (
   "id" uuid PRIMARY KEY,
   "title" varchar(255) NOT NULL,
-  "description" text
+  "description" text,
+  "short" varchar(5) NOT NULL,
+  "order" int,
+  "standard" boolean
 );
 
 CREATE TABLE "c_attributes" (
@@ -71,7 +74,8 @@ CREATE TABLE "c_attributes" (
 CREATE TABLE "l_advantages" (
   "id" uuid PRIMARY KEY,
   "title" varchar(255) UNIQUE NOT NULL,
-  "description" text
+  "description" text,
+  "order" int
 );
 
 CREATE TABLE "c_advantages" (
@@ -105,7 +109,9 @@ CREATE TABLE "l_skills" (
   "description" text,
   "attribute_1_id" uuid NOT NULL,
   "attribute_2_id" uuid NOT NULL,
-  "attribute_3_id" uuid NOT NULL
+  "attribute_3_id" uuid NOT NULL,
+  "order" int,
+  "standard" boolean
 );
 
 CREATE TABLE "c_skills" (
@@ -118,7 +124,8 @@ CREATE TABLE "c_skills" (
 CREATE TABLE "l_languages" (
   "id" uuid PRIMARY KEY,
   "title" varchar(255) UNIQUE NOT NULL,
-  "description" text
+  "description" text,
+  "order" int
 );
 
 CREATE TABLE "c_languages" (
@@ -131,7 +138,8 @@ CREATE TABLE "c_languages" (
 CREATE TABLE "l_scripts" (
   "id" uuid PRIMARY KEY,
   "title" varchar(255) UNIQUE NOT NULL,
-  "description" text
+  "description" text,
+  "order" int
 );
 
 CREATE TABLE "c_scripts" (

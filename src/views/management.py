@@ -13,10 +13,9 @@ class ManagementView(View):
         db_session = Database.Session()
         user = UserManager.get_user(db_session=db_session)
         if user.is_admin():
-            headers = db_session.query(LHead).order_by("order").all()
-            # TODO: Sortierung
-            attributes = db_session.query(LAttribute).all()
-            skills = db_session.query(LSkill).all()
+            headers = db_session.query(LHead).order_by('order').all()
+            attributes = db_session.query(LAttribute).order_by('order').all()
+            skills = db_session.query(LSkill).order_by('order').all()
             template = self.env.get_template('management/character_values.tmpl')
             return template.render(headers=headers, attributes=attributes, skills=skills)
 
@@ -30,7 +29,10 @@ class ManagementView(View):
                 attribute: LAttribute = db_session.query(LAttribute).filter_by(id=attribute_id).one()
                 return {'id': str(attribute.id),
                         'title': attribute.title,
-                        'description': attribute.description}
+                        'description': attribute.description,
+                        'short': attribute.short,
+                        'order': attribute.order,
+                        'standard': attribute.standard}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
@@ -63,15 +65,19 @@ class ManagementView(View):
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
-    def aj_set_attribute(self, att_id=None, title=None, description=None):
+    def aj_set_attribute(self, att_id=None, title=None, description=None, short=None, order=None, standard=None):
         if att_id is not None:
             db_session = Database.Session()
             user = UserManager.get_user(db_session=db_session)
             if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
-                attribute = ManagementController.set_or_create_attribute(db_session, att_id, title, description)
+                attribute = ManagementController.set_or_create_attribute(db_session, att_id, title, description, short,
+                                                                         order, standard == 'true')
                 return {'id': str(attribute.id),
                         'title': attribute.title,
-                        'description': attribute.description}
+                        'description': attribute.description,
+                        'short': attribute.short,
+                        'order': attribute.order,
+                        'standard': attribute.standard}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
