@@ -52,25 +52,28 @@
 
 <div><h2>Fertigkeiten</h2></div>
 <table id="skills" class="alter">
-    <tr>
+    <tr">
         <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
         <th class="attribute_1">E1</th>
         <th class="attribute_2">E2</th>
         <th class="attribute_3">E3</th>
-        <td class="buttons"></td>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
+        <th class="buttons"></th>
     </tr>
     {% for skill in skills %}
-    <tr id="{{skill.id}}">
+    <tr id="{{skill.id}}" class="skill">
         <td class="title">{{skill.title}}</td>
         <td class="description">{{skill.description}}</td>
         <td class="attribute_1">{{skill.attribute_1.short}}</td>
         <td class="attribute_2">{{skill.attribute_2.short}}</td>
         <td class="attribute_3">{{skill.attribute_3.short}}</td>
+        <td class="order">{{skill.order}}</td>
+        <td class="standard">{% if skill.standard %}&check;{% else %}x{% endif %}</td>
         <td class="buttons"></td>
     </tr>
     {% endfor %}
 </table>
-
 <script type="text/javascript" src="/static/js/management.js"></script>
 {% endblock %}

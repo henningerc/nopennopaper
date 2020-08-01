@@ -1,7 +1,19 @@
+/**********************
+** Helping functions **
+**********************/
+function createSelect(class_names, id_field, id, values, selected) {
+    select = '<select class="' + class_names +'" ' + id_field + '="' + id + '">\n';
+    for(v in values) {
+        select += '<option value="' + values[v].id + '"' + (values[v].id==selected?' selected':'') + '>'
+            + values[v].text + '</option>\n';
+    }
+    select += "</select>\n";
+    return select;
+}
+
+
 /***************
-**            **
 ** Attributes **
-**            **
 ***************/
 function showAttributeForm(event) {
     var req_item = this;
@@ -12,7 +24,7 @@ function showAttributeForm(event) {
         row.children('td.description').html('<input type="text" class="description" att_id="' + d_in.id + '" value="' + d_in.description + '" />');
         row.children('td.short').html('<input type="text" class="short" att_id="' + d_in.id + '" value="' + d_in.short + '" />');
         row.children('td.order').html('<input type="number" class="order" att_id="' + d_in.id + '" value="' + d_in.order + '" />');
-        row.children('td.standard').html('<input type="checkbox" class="standard" head_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
+        row.children('td.standard').html('<input type="checkbox" class="standard" att_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
         row.children('td.buttons').html('<a href="javascript:void(0)" class="submit" att_id="' + d_in.id + '">(&check;)</a>'
                 + '<a href="javascript:void(0)" class="delete" att_id="' + d_in.id + '">(X)</a>');
         $('a.submit[att_id="' + d_in.id + '"]').on('click', submitAttributeForm);
@@ -146,6 +158,84 @@ function clickNewHead(event){
 }
 
 
+/***********
+**        **
+** Skills **
+**        **
+***********/
+function showSkillForm(event) {
+    var req_item = this;
+    $.post('aj_get_skill', {'skill_id': req_item.id}, function(d_in){
+        row = $('tr#' + d_in.id);
+        row.off('click');
+        row.children('td.attribute_1').html(createSelect("att_1", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_1));
+        row.children('td.attribute_2').html(createSelect("att_2", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_2));
+        row.children('td.attribute_3').html(createSelect("att_3", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_3));
+        row.children('td.title').html('<input type="text" class="title" skill_id="' + d_in.id + '" value="' + d_in.title + '" />');
+        row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + d_in.description + '" />');
+        row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + d_in.order + '" />');
+        row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
+        row.children('td.buttons').html('<a href="javascript:void(0)" class="submit" skill_id="' + d_in.id + '">(&check;)</a>'
+                + '<a href="javascript:void(0)" class="delete" skill_id="' + d_in.id + '">(X)</a>');
+        $('a.submit[skill_id="' + d_in.id + '"]').on('click', submitSkillForm);
+        $('a.delete[skill_id="' + d_in.id + '"]').on('click', clickDeleteSkill);
+    });
+}
+
+function submitSkillForm(event) {
+    var id = event.target.getAttribute("skill_id");
+    d_out = {'skill_id': id,
+            'title': $('input.title[skill_id="' + id + '"]').val(),
+            'description': $('input.description[skill_id="' + id + '"]').val(),
+            'attribute_1': $('select.att_1[skill_id="' + id + '"').val(),
+            'attribute_2': $('select.att_2[skill_id="' + id + '"').val(),
+            'attribute_3': $('select.att_3[skill_id="' + id + '"').val(),
+            'order': $('input.order[skill_id="' + id + '"]').val(),
+            'standard': ($('input.standard[skill_id="' + id + '"]').is(':checked')? true: false)};
+    $.post('aj_set_skill', d_out, function(d_in){
+        console.log(d_in);
+        if(id=='new_skill') {
+            $('tr#new_skill').attr('id', d_in.id);
+        }
+        var row = $('tr#' + d_in.id);
+        row.children('td.title').text(d_in.title);
+        row.children('td.description').text(d_in.description);
+        row.children('td.attribute_1').text(d_in.attribute_1);
+        row.children('td.attribute_2').text(d_in.attribute_2);
+        row.children('td.attribute_3').text(d_in.attribute_3);
+        row.children('td.order').text(d_in.order);
+        row.children('td.standard').html(d_in.standard?'&check;':'x')
+        row.children('td.buttons').html('');
+        row.on('click', showSkillForm);
+    })
+}
+
+function clickDeleteSkill(event) {
+    var d_out = {'skill_id': event.target.getAttribute("skill_id")};
+    console.log(d_out);
+    $.post('aj_delete_skill', d_out, function(d_in){
+        if(d_in.deleted){
+            $('tr.skill#' + d_in.id).remove()
+        }
+    });
+    event.preventDefault();
+}
+
+function clickNewSkill(event){
+    // TODO: Doppelte neue verhindern oder kennzeichnen
+    var new_tr = '<tr id="new_attribute" class="editable attribute">'
+        + '<td class="title"><input type="text" class="title" skill_id="new_attribute" value="" /></td>'
+        + '<td class="description"><input type="text" class="description" skill_id="new_attribute" value="" /></td>'
+        + '<td class="short"><input type="text" class="short" skill_id="new_attribute" value="" /></td>'
+        + '<td class="order"><input type="number" class="order" skill_id="new_attribute" value="" /></td>'
+        + '<td class="standard"><input type="checkbox" class="standard" skill_id="new_header" /></td>'
+        + '<td class="buttons"><a href="javascript:void(0)" class="submit" skill_id="new_attribute">(&check;)</a></td>'
+        + '</tr>';
+    $('table#skills').append(new_tr);
+    $('a.submit[skill_id="new_attribute"]').on('click', submitAttributeForm);
+}
+
+
 /**************
 **           **
 ** Listeners **
@@ -153,6 +243,11 @@ function clickNewHead(event){
 **************/
 $('a#new_attribute').on('click', clickNewAttribute);
 $('tr.attribute').on('click', showAttributeForm);
+
 $('a#new_head').on('click', clickNewHead);
 $('tr.head_value').on('click', showHeadForm);
+
+$('a#new_skill').on('click', clickNewSkill);
+$('tr.skill').on('click', showSkillForm);
+
 // TODO: SameSite-Probleme in der Java-Console zu sehen

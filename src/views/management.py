@@ -107,14 +107,19 @@ class ManagementView(View):
             user = UserManager.get_user(db_session=db_session)
             if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
                 skill: LSkill = db_session.query(LSkill).filter_by(id=skill_id).one()
+                attribute_list = []
+                attributes = db_session.query(LAttribute).order_by('order').all()
+                for att in attributes:
+                    attribute_list.append({'id': str(att.id), 'text': att.short})
                 return {'id': str(skill.id),
                         'title': skill.title,
                         'description': skill.description,
                         'order': skill.order,
                         'standard': skill.standard,
-                        'attribute_1': skill.attribute_1_id,
-                        'attribute_2': skill.attribute_2_id,
-                        'attribute_3': skill.attribute_3_id}
+                        'attribute_1': str(skill.attribute_1_id),
+                        'attribute_2': str(skill.attribute_2_id),
+                        'attribute_3': str(skill.attribute_3_id),
+                        'attribute_list': attribute_list}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
@@ -126,15 +131,15 @@ class ManagementView(View):
             if user.is_admin():  # TODO: Wenn Benutzer nicht angemeldet Fehlermeldung!
                 skill: LSkill = ManagementController.set_or_create_skill(db_session, skill_id, title, description,
                                                                          attribute_1, attribute_2, attribute_3, order,
-                                                                         standard)
+                                                                         standard == "true")
                 return {'id': str(skill.id),
                         'title': skill.title,
                         'description': skill.description,
                         'order': skill.order,
                         'standard': skill.standard,
-                        'attribute_1': skill.attribute_1_id,
-                        'attribute_2': skill.attribute_2_id,
-                        'attribute_3': skill.attribute_3_id}
+                        'attribute_1': skill.attribute_1.short,
+                        'attribute_2': skill.attribute_2.short,
+                        'attribute_3': skill.attribute_3.short}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()
