@@ -24,7 +24,16 @@
     </tr>
     {% endfor %}
 </table>
-<a href="javascript:void(0)" id="new_attribute">(+)</a>
+<a href="javascript:void(0)" id="new_attribute" title="Eigenschaft hinzufügen">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="medium">
+        <g data-name="Layer 2">
+            <g data-name="plus-circle">
+                <rect width="24" height="24" opacity="0"/>
+                <path class="green" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3 11h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2h2a1 1 0 0 1 0 2z"/>
+            </g>
+        </g>
+    </svg>
+</a>
 
 <div><h2>Kopfdaten</h2>
 <!--a href="create_heads">(Standards einfügen)</a--></div>
@@ -47,12 +56,20 @@
 {% endfor %}
 </table>
 <!-- TODO: Bild suchen -->
-<a href="javascript:void(0)" id="new_head">(+)</a>
+<a href="javascript:void(0)" id="new_head">    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="medium">
+        <g data-name="Layer 2">
+            <g data-name="plus-circle">
+                <rect width="24" height="24" opacity="0"/>
+                <path class="green" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3 11h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2h2a1 1 0 0 1 0 2z"/>
+            </g>
+        </g>
+    </svg>
+</a>
 
 
 <div><h2>Fertigkeiten</h2></div>
 <table id="skills" class="alter">
-    <tr">
+    <tr>
         <th class="title">Titel</th>
         <th class="description">Beschreibung</th>
         <th class="attribute_1">E1</th>
