@@ -45,6 +45,7 @@ function makeAttributeForm(d_in) {
     row.children('td.order').html('<input type="number" class="order" att_id="' + d_in.id + '" value="' + (a_id=="new_attribute"? "0": d_in.order) + '" />');
     row.children('td.standard').html('<input type="checkbox" class="standard" att_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
     row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
 
     var submit = $('tr#' + d_in.id + ' path.check');
     submit.attr('att_id', d_in.id);
@@ -55,6 +56,7 @@ function makeAttributeForm(d_in) {
     del.on('click', clickDeleteAttribute);
 
     $('tr#' + d_in.id + ' input.title').focus();
+
     return row;
 }
 
@@ -77,6 +79,7 @@ function submitAttributeForm(event) {
         row.children('td.order').text(d_in.order);
         row.children('td.standard').html(d_in.standard?'&check;':'x')
         row.children('td.buttons').html('');
+        row.children('td.buttons').hide();
         row.on('click', showAttributeForm);
     })
 }
@@ -130,6 +133,7 @@ function makeHeadForm(d_in) {
     row.children('td.order').html('<input type="number" class="order" head_id="' + d_in.id + '" value="' + (h_id=="new_header"? "0": d_in.order) + '" />');
     row.children('td.standard').html('<input type="checkbox" class="standard" head_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
     row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
 
     var submit = $('tr#' + d_in.id + ' path.check');
     submit.attr('head_id', d_in.id);
@@ -157,6 +161,7 @@ function submitHeadForm(event) {
     }
 
     $.post('aj_set_head', d_out, function(d_in){
+        var row = $('tr#' + d_in.id);
         if(id=='new') {
             $('tr#new_header').attr('id', d_in.id);
         }
@@ -165,6 +170,7 @@ function submitHeadForm(event) {
         $('tr#' + d_in.id + ' td.order').text(d_in.order);
         $('tr#' + d_in.id + ' td.standard').html(d_in.standard?'&check;':'x');
         $('tr#' + d_in.id + ' td.buttons').text('');
+        row.children('td.buttons').hide();
         $('tr#' + d_in.id).on('click', showHeadForm);
     });
 }
@@ -220,6 +226,7 @@ function makeSkillForm(d_in) {
     row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + (s_id=="new_skill"? "0": d_in.order) + '" />');
     row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
     row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
 
     var submit = $('tr#' + d_in.id + ' path.check');
     submit.attr('skill_id', d_in.id);
@@ -259,6 +266,7 @@ function submitSkillForm(event) {
         row.children('td.order').text(d_in.order);
         row.children('td.standard').html(d_in.standard?'&check;':'x')
         row.children('td.buttons').html('');
+        row.children('td.buttons').hide();
         row.on('click', showSkillForm);
     })
 }
