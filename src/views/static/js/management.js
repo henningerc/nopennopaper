@@ -191,15 +191,16 @@ function showSkillForm(event) {
 }
 
 function makeSkillForm(d_in) {
+    var s_id = d_in.id;
     row = $('tr#' + d_in.id);
     $.post('aj_get_attribute_list', {}, function(d_attribute_list){
         row.children('td.attribute_1').html(createSelect("att_1", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_1));
         row.children('td.attribute_2').html(createSelect("att_2", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_2));
         row.children('td.attribute_3').html(createSelect("att_3", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_3));
     });
-    row.children('td.title').html('<input type="text" class="title" skill_id="' + d_in.id + '" value="' + d_in.title + '" />');
-    row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + d_in.description + '" />');
-    row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + d_in.order + '" />');
+    row.children('td.title').html('<input type="text" class="title" skill_id="' + d_in.id + '" value="' + (s_id=="new_skill"? "": d_in.title) + '" />');
+    row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + (s_id=="new_skill"? "": d_in.description) + '" />');
+    row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + (s_id=="new_skill"? "0": d_in.order) + '" />');
     row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
     row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
 
@@ -210,6 +211,8 @@ function makeSkillForm(d_in) {
     var del = $('tr#' + d_in.id + ' path.trash');
     del.attr('skill_id', d_in.id);
     del.on('click', clickDeleteSkill);
+
+    $('tr#' + d_in.id + ' input.title').focus();
 
     return row;
 }
