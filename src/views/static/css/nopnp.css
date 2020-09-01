@@ -34,3 +34,59 @@ div#ajax {
     left: 15em;
     display: none;
 }
+
+div.head_value {
+    border: 2px dotted blue;
+    margin-top: 4px;
+}
+
+.small {
+    width: 20px;
+    height: 20px;
+}
+
+.medium {
+    width: 26px;
+    height: 26px;
+}
+
+.green {
+    fill: #0ca80c;
+}
+
+.check {
+    fill: #0ca80c;
+    cursor: pointer;
+}
+
+.trash {
+    fill: #b51212;
+    cursor: pointer;
+}
+
+td.title, td.description, td.order, td.standard, th.title, th.description, th.order, th.standard {
+    padding: 0.3em 0.5em 0.3em 0.5em;
+}
+
+table.alter tr:nth-child(2n+1) {
+    background-color: #dcdcd0;
+}
+
+td.order, td.standard{
+    text-align: center;
+}
+
+table.alter tr:nth-child(2n) {
+    background-color: #b0c0c0;
+}
+
+table.alter tr:nth-child(1) {
+    background-color: inherit;
+}
+
+input.order {
+    width: 4em;
+}
+td.buttons {
+    width: 2em;
+}

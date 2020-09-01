@@ -1,0 +1,92 @@
+{% extends 'framework/base.tmpl' %}
+
+{% block title%}Charakterdaten ändern{% endblock %}
+
+{% block content%}
+<div><h2>Eigenschaften</h2></div>
+<table id="attributes" class="alter">
+    <tr>
+        <th class="title">Titel</th>
+        <th class="description">Beschreibung</th>
+        <th class="short">Kurz</th>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
+        <th class="buttons"></th>
+    </tr>
+    {% for att in attributes %}
+    <tr id="{{att.id}}" class="attribute">
+        <td class="title">{{att.title}}</td>
+        <td class="description">{{att.description}}</td>
+        <td class="short">{{att.short}}</td>
+        <td class="order">{{att.order}}</td>
+        <td class="standard">{% if att.standard %}&check;{% else %}x{% endif %}</td>
+        <td class="buttons"></td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="javascript:void(0)" id="new_attribute" title="Eigenschaft hinzufügen">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="medium">
+        <path class="green" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3 11h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2h2a1 1 0 0 1 0 2z"/>
+    </svg>
+</a>
+
+<div><h2>Kopfdaten</h2>
+<!--a href="create_heads">(Standards einfügen)</a--></div>
+<table id="headers" class="alter">
+    <tr>
+        <th class="title">Titel</th>
+        <th class="description">Beschreibung</th>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
+        <th class="buttons"></th>
+    </tr>
+{% for header in headers %}
+    <tr id="{{header.id}}" class="head_value">
+        <td class="title">{{header.title}}</td>
+        <td class="description">{{header.description}}</td>
+        <td class="order">{{header.order}}</td>
+        <td class="standard">{% if header.standard %}&check;{% else %}x{% endif %}</td>
+        <td class="buttons"></td>
+    </tr>
+{% endfor %}
+</table>
+<a href="javascript:void(0)" id="new_head">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="medium">
+        <path class="green" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3 11h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2h2a1 1 0 0 1 0 2z"/>
+    </svg>
+</a>
+
+
+<div><h2>Fertigkeiten</h2></div>
+<table id="skills" class="alter">
+    <tr>
+        <th class="title">Titel</th>
+        <th class="description">Beschreibung</th>
+        <th class="attribute_1">E1</th>
+        <th class="attribute_2">E2</th>
+        <th class="attribute_3">E3</th>
+        <th class="order" title="Reihenfolge">Rf</th>
+        <th class="standard" title="Standard">Std</th>
+        <th class="buttons"></th>
+    </tr>
+    {% for skill in skills %}
+    <tr id="{{skill.id}}" class="skill">
+        <td class="title">{{skill.title}}</td>
+        <td class="description">{{skill.description}}</td>
+        <td class="attribute_1">{{skill.attribute_1.short}}</td>
+        <td class="attribute_2">{{skill.attribute_2.short}}</td>
+        <td class="attribute_3">{{skill.attribute_3.short}}</td>
+        <td class="order">{{skill.order}}</td>
+        <td class="standard">{% if skill.standard %}&check;{% else %}x{% endif %}</td>
+        <td class="buttons"></td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="javascript:void(0)" id="new_skill">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="medium">
+        <path class="green" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3 11h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2h2a1 1 0 0 1 0 2z"/>
+    </svg>
+</a>
+
+<script type="text/javascript" src="/static/js/management.js"></script>
+{% endblock %}

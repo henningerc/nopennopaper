@@ -1,0 +1,8 @@
+backspace.svg
+checkmark.svg
+close.svg
+plus.svg
+trash-2.svg
+The icons above belong to the Eva-pack.
+It is subject to the MIT license.
+

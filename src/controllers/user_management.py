@@ -29,12 +29,12 @@ class UserManager:
         ses.commit()
 
     @staticmethod
-    def create(login=None, username=None, email=None, password=None) -> User:
+    def create(login=None, username=None, email=None, password=None, role=1) -> User:
         user = User(login=login,
                     username=username,
                     email=email,
                     password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(),
-                    role=1)
+                    role=role)
         session = Database.Session()
         session.add(user)
         session.commit()
