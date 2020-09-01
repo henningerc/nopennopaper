@@ -54,6 +54,16 @@ div.head_value {
     fill: #0ca80c;
 }
 
+.check {
+    fill: #0ca80c;
+    cursor: pointer;
+}
+
+.trash {
+    fill: #b51212;
+    cursor: pointer;
+}
+
 td.title, td.description, td.order, td.standard, th.title, th.description, th.order, th.standard {
     padding: 0.3em 0.5em 0.3em 0.5em;
 }

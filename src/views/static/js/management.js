@@ -11,6 +11,18 @@ function createSelect(class_names, id_field, id, values, selected) {
     return select;
 }
 
+function getButton(button, path_class, im_size) {
+    var value;
+    //TODO: Inneres anklickbar und weiß machen
+    if(button=="checkmark")
+        value = 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.3 7.61l-4.57 6a1 1 0 0 1-.79.39 1 1 0 0 1-.79-.' +
+        '38l-2.44-3.11a1 1 0 0 1 1.58-1.23l1.63 2.08 3.78-5a1 1 0 1 1 1.6 1.22z" class="';
+    if(button=="trash")
+        value='M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0' +
+        ' 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2zM10 16a1 1 0 0 1-2 0v-4a1 1 0 0 1 2 0zm0-11.67c0-.16.21-.33.5-.33h' +
+        '3c.29 0 .5.17.5.33V6h-4zM16 16a1 1 0 0 1-2 0v-4a1 1 0 0 1 2 0z';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="' + im_size + '"><path class="' + path_class + '" d="' + value + '"/></svg>';
+}
 
 /***************
 ** Attributes **
@@ -25,10 +37,15 @@ function showAttributeForm(event) {
         row.children('td.short').html('<input type="text" class="short" att_id="' + d_in.id + '" value="' + d_in.short + '" />');
         row.children('td.order').html('<input type="number" class="order" att_id="' + d_in.id + '" value="' + d_in.order + '" />');
         row.children('td.standard').html('<input type="checkbox" class="standard" att_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
-        row.children('td.buttons').html('<a href="javascript:void(0)" class="submit" att_id="' + d_in.id + '">(&check;)</a>'
-                + '<a href="javascript:void(0)" class="delete" att_id="' + d_in.id + '">(X)</a>');
-        $('a.submit[att_id="' + d_in.id + '"]').on('click', submitAttributeForm);
-        $('a.delete[att_id="' + d_in.id + '"]').on('click', clickDeleteAttribute);
+        row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+
+        var submit = $('tr#' + d_in.id + ' path.check');
+        submit.attr('att_id', d_in.id);
+        submit.on('click', submitAttributeForm);
+
+        var del = $('tr#' + d_in.id + ' path.trash');
+        del.attr('att_id', d_in.id);
+        del.on('click', clickDeleteAttribute);
     });
 }
 
@@ -57,7 +74,6 @@ function submitAttributeForm(event) {
 
 function clickDeleteAttribute(event) {
     var d_out = {'att_id': event.target.getAttribute("att_id")};
-    console.log(d_out);
     $.post('aj_delete_attribute', d_out, function(d_in){
         if(d_in.deleted){
             $('tr#' + d_in.id).remove()
@@ -89,7 +105,6 @@ function clickNewAttribute(event){
 function showHeadForm(event) {
     var req_item = this;
     $.post('aj_get_head', {'head_id': req_item.id}, function(data){
-        console.log(data);
         $('tr#' + data.id).off('click');
         // TODO: Sollten eine KeyDown-Methode bekommen
         $('tr#' + data.id + ' td.title')
@@ -101,10 +116,15 @@ function showHeadForm(event) {
         $('tr#' + data.id + ' td.standard')
             .html('<input type="checkbox" class="standard" head_id="' + data.id + '"' + (data.standard?' checked':'') + '/>');
         $('tr#' + data.id + ' td.buttons')
-            .html('<a href="javascript:void(0)" class="submit" head_id="' + data.id + '">(&check;)</a>'
-                + '<a href="javascript:void(0)" class="delete" head_id="' + data.id + '">(X)</a');
-        $('a.submit[head_id="' + data.id + '"]').on('click', submitHeadForm);
-        $('a.delete[head_id="' + data.id + '"]').on('click', clickDeleteHead);
+            .html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+
+        var submit = $('tr#' + data.id + ' path.check');
+        submit.attr('head_id', data.id);
+        submit.on('click', submitHeadForm);
+
+        var del = $('tr#' + data.id + ' path.trash');
+        del.attr('head_id', data.id);
+        del.on('click', clickDeleteHead);
     });
 }
 
@@ -135,7 +155,6 @@ function submitHeadForm(event) {
 
 function clickDeleteHead(event) {
     var d_out = {'head_id': event.target.getAttribute("head_id")};
-    console.log(d_out);
     $.post('aj_delete_head', d_out, function(d_in){
         if(d_in.deleted){
             $('tr#' + d_in.id).remove()
@@ -175,10 +194,15 @@ function showSkillForm(event) {
         row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + d_in.description + '" />');
         row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + d_in.order + '" />');
         row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
-        row.children('td.buttons').html('<a href="javascript:void(0)" class="submit" skill_id="' + d_in.id + '">(&check;)</a>'
-                + '<a href="javascript:void(0)" class="delete" skill_id="' + d_in.id + '">(X)</a>');
-        $('a.submit[skill_id="' + d_in.id + '"]').on('click', submitSkillForm);
-        $('a.delete[skill_id="' + d_in.id + '"]').on('click', clickDeleteSkill);
+        row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+
+        var submit = $('tr#' + d_in.id + ' path.check');
+        submit.attr('skill_id', d_in.id);
+        submit.on('click', submitSkillForm);
+
+        var del = $('tr#' + d_in.id + ' path.trash');
+        del.attr('skill_id', d_in.id);
+        del.on('click', clickDeleteSkill);
     });
 }
 
@@ -193,7 +217,6 @@ function submitSkillForm(event) {
             'order': $('input.order[skill_id="' + id + '"]').val(),
             'standard': ($('input.standard[skill_id="' + id + '"]').is(':checked')? true: false)};
     $.post('aj_set_skill', d_out, function(d_in){
-        console.log(d_in);
         if(id=='new_skill') {
             $('tr#new_skill').attr('id', d_in.id);
         }
@@ -212,7 +235,6 @@ function submitSkillForm(event) {
 
 function clickDeleteSkill(event) {
     var d_out = {'skill_id': event.target.getAttribute("skill_id")};
-    console.log(d_out);
     $.post('aj_delete_skill', d_out, function(d_in){
         if(d_in.deleted){
             $('tr.skill#' + d_in.id).remove()
