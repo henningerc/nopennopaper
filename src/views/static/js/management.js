@@ -27,6 +27,7 @@ function getButton(button, path_class, im_size) {
 /***************
 ** Attributes **
 ***************/
+// TODO: AttributeForm anpassen / Wie bei Skills entsprechend einbauen.
 function showAttributeForm(event) {
     var req_item = this;
     $.post('aj_get_attribute', {'attribute_id': req_item.id}, function(d_in){
@@ -83,7 +84,6 @@ function clickDeleteAttribute(event) {
 }
 
 function clickNewAttribute(event){
-    // TODO: Doppelte neue verhindern oder kennzeichnen
     var new_tr = '<tr id="new_attribute" class="editable attribute">'
         + '<td class="title"><input type="text" class="title" att_id="new_attribute" value="" /></td>'
         + '<td class="description"><input type="text" class="description" att_id="new_attribute" value="" /></td>'
@@ -92,8 +92,10 @@ function clickNewAttribute(event){
         + '<td class="standard"><input type="checkbox" class="standard" head_id="new_header" /></td>'
         + '<td class="buttons"><a href="javascript:void(0)" class="submit" att_id="new_attribute">(&check;)</a></td>'
         + '</tr>';
-    $('table#attributes').append(new_tr);
-    $('a.submit[att_id="new_attribute"]').on('click', submitAttributeForm);
+    if(!$('tr#new_attribute').length){
+        $('table#attributes').append(new_tr);
+        $('a.submit[att_id="new_attribute"]').on('click', submitAttributeForm);
+    }
 }
 
 
@@ -164,7 +166,6 @@ function clickDeleteHead(event) {
 }
 
 function clickNewHead(event){
-    // TODO: Doppelte neue verhindern oder kennzeichnen
     var new_tr = '<tr id="new_header" class="editable head_value">'
         + '<td class="title"><input type="text" class="title" head_id="new_header" value="" /></td>'
         + '<td class="description"><input type="text" class="description" head_id="new_header" value="" /></td>'
@@ -172,8 +173,10 @@ function clickNewHead(event){
         + '<td class="standard"><input type="checkbox" class="standard" head_id="new_header" /></td>'
         + '<td class="buttons"><a href="javascript:void(0)" class="submit" head_id="new_header">(&check;)</a></td>'
         + '</tr>';
-    $('table#headers').append(new_tr);
-    $('a.submit[head_id="new_header"]').on('click', submitHeadForm);
+    if(!$('tr#new_header').length) {
+        $('table#headers').append(new_tr);
+        $('a.submit[head_id="new_header"]').on('click', submitHeadForm);
+    }
 }
 
 
@@ -257,7 +260,6 @@ function clickDeleteSkill(event) {
 }
 
 function clickNewSkill(event){
-    // TODO: Doppelte neue verhindern oder kennzeichnen
     var new_tr = '<tr id="new_skill" class="editable skill">'
         + '<td class="title"></td>'
         + '<td class="description"></td>'
@@ -268,8 +270,10 @@ function clickNewSkill(event){
         + '<td class="standard"></td>'
         + '<td class="buttons"></td>'
         + '</tr>'
-    $('table#skills').append(new_tr);
-    makeSkillForm({id: "new_skill"});
+    if(!$('tr#new_skill').length){
+        $('table#skills').append(new_tr);
+        makeSkillForm({id: "new_skill"});
+    }
 }
 
 
