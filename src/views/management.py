@@ -118,8 +118,17 @@ class ManagementView(View):
                         'standard': skill.standard,
                         'attribute_1': str(skill.attribute_1_id),
                         'attribute_2': str(skill.attribute_2_id),
-                        'attribute_3': str(skill.attribute_3_id),
-                        'attribute_list': attribute_list}
+                        'attribute_3': str(skill.attribute_3_id)}
+
+    @cherrypy.expose()
+    @cherrypy.tools.json_out()
+    def aj_get_attribute_list(self):
+        db_session = Database.Session()
+        attribute_list = []
+        attributes = db_session.query(LAttribute).order_by('order').all()
+        for att in attributes:
+            attribute_list.append({'id': str(att.id), 'text': att.short})
+        return {'attribute_list': attribute_list}
 
     @cherrypy.expose()
     @cherrypy.tools.json_out()

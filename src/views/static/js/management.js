@@ -185,25 +185,33 @@ function clickNewHead(event){
 function showSkillForm(event) {
     var req_item = this;
     $.post('aj_get_skill', {'skill_id': req_item.id}, function(d_in){
-        row = $('tr#' + d_in.id);
+        row = makeSkillForm(d_in);
         row.off('click');
-        row.children('td.attribute_1').html(createSelect("att_1", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_1));
-        row.children('td.attribute_2').html(createSelect("att_2", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_2));
-        row.children('td.attribute_3').html(createSelect("att_3", 'skill_id', d_in.id, d_in.attribute_list, d_in.attribute_3));
-        row.children('td.title').html('<input type="text" class="title" skill_id="' + d_in.id + '" value="' + d_in.title + '" />');
-        row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + d_in.description + '" />');
-        row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + d_in.order + '" />');
-        row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
-        row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
-
-        var submit = $('tr#' + d_in.id + ' path.check');
-        submit.attr('skill_id', d_in.id);
-        submit.on('click', submitSkillForm);
-
-        var del = $('tr#' + d_in.id + ' path.trash');
-        del.attr('skill_id', d_in.id);
-        del.on('click', clickDeleteSkill);
     });
+}
+
+function makeSkillForm(d_in) {
+    row = $('tr#' + d_in.id);
+    $.post('aj_get_attribute_list', {}, function(d_attribute_list){
+        row.children('td.attribute_1').html(createSelect("att_1", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_1));
+        row.children('td.attribute_2').html(createSelect("att_2", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_2));
+        row.children('td.attribute_3').html(createSelect("att_3", 'skill_id', d_in.id, d_attribute_list.attribute_list, d_in.attribute_3));
+    });
+    row.children('td.title').html('<input type="text" class="title" skill_id="' + d_in.id + '" value="' + d_in.title + '" />');
+    row.children('td.description').html('<input type="text" class="description" skill_id="' + d_in.id + '" value="' + d_in.description + '" />');
+    row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + d_in.order + '" />');
+    row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
+    row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+
+    var submit = $('tr#' + d_in.id + ' path.check');
+    submit.attr('skill_id', d_in.id);
+    submit.on('click', submitSkillForm);
+
+    var del = $('tr#' + d_in.id + ' path.trash');
+    del.attr('skill_id', d_in.id);
+    del.on('click', clickDeleteSkill);
+
+    return row;
 }
 
 function submitSkillForm(event) {
@@ -216,7 +224,9 @@ function submitSkillForm(event) {
             'attribute_3': $('select.att_3[skill_id="' + id + '"').val(),
             'order': $('input.order[skill_id="' + id + '"]').val(),
             'standard': ($('input.standard[skill_id="' + id + '"]').is(':checked')? true: false)};
+    console.log(d_out);
     $.post('aj_set_skill', d_out, function(d_in){
+        console.log(d_in);
         if(id=='new_skill') {
             $('tr#new_skill').attr('id', d_in.id);
         }
@@ -245,16 +255,18 @@ function clickDeleteSkill(event) {
 
 function clickNewSkill(event){
     // TODO: Doppelte neue verhindern oder kennzeichnen
-    var new_tr = '<tr id="new_attribute" class="editable attribute">'
-        + '<td class="title"><input type="text" class="title" skill_id="new_attribute" value="" /></td>'
-        + '<td class="description"><input type="text" class="description" skill_id="new_attribute" value="" /></td>'
-        + '<td class="short"><input type="text" class="short" skill_id="new_attribute" value="" /></td>'
-        + '<td class="order"><input type="number" class="order" skill_id="new_attribute" value="" /></td>'
-        + '<td class="standard"><input type="checkbox" class="standard" skill_id="new_header" /></td>'
-        + '<td class="buttons"><a href="javascript:void(0)" class="submit" skill_id="new_attribute">(&check;)</a></td>'
-        + '</tr>';
+    var new_tr = '<tr id="new_skill" class="editable skill">'
+        + '<td class="title"></td>'
+        + '<td class="description"></td>'
+        + '<td class="attribute_1"></td>'
+        + '<td class="attribute_2"></td>'
+        + '<td class="attribute_3"></td>'
+        + '<td class="order"></td>'
+        + '<td class="standard"></td>'
+        + '<td class="buttons"></td>'
+        + '</tr>'
     $('table#skills').append(new_tr);
-    $('a.submit[skill_id="new_attribute"]').on('click', submitAttributeForm);
+    makeSkillForm({id: "new_skill"});
 }
 
 

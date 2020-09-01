@@ -63,9 +63,9 @@ class ManagementController:
 
     @staticmethod
     def create_skill(db_session, title, description, att1, att2, att3, order, standard) -> LSkill:
-        attribute1 = db_session.query(LSkill).filter_by(id=att1).one()
-        attribute2 = db_session.query(LSkill).filter_by(id=att2).one()
-        attribute3 = db_session.query(LSkill).filter_by(id=att3).one()
+        attribute1 = db_session.query(LAttribute).filter_by(id=att1).one()
+        attribute2 = db_session.query(LAttribute).filter_by(id=att2).one()
+        attribute3 = db_session.query(LAttribute).filter_by(id=att3).one()
         skill = LSkill(title=title, description=description, attribute_1=attribute1, attribute_2=attribute2,
                        attribute_3=attribute3, order=order, standard=standard)
         db_session.add(skill)
@@ -88,6 +88,7 @@ class ManagementController:
         skill.attribute_1 = db_session.query(LAttribute).filter_by(id=att1).one()
         skill.attribute_2 = db_session.query(LAttribute).filter_by(id=att2).one()
         skill.attribute_3 = db_session.query(LAttribute).filter_by(id=att3).one()
+        # TODO: Order vielleicht abfangen
         skill.order = order
         skill.standard = standard
         db_session.commit()
