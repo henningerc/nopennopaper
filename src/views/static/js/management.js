@@ -31,23 +31,33 @@ function getButton(button, path_class, im_size) {
 function showAttributeForm(event) {
     var req_item = this;
     $.post('aj_get_attribute', {'attribute_id': req_item.id}, function(d_in){
-        var row = $('tr#' + d_in.id);
+        var row = makeAttributeForm(d_in);
         row.off('click');
-        row.children('td.title').html('<input type="text" class="title" att_id="' + d_in.id + '" value="' + d_in.title + '" />');
-        row.children('td.description').html('<input type="text" class="description" att_id="' + d_in.id + '" value="' + d_in.description + '" />');
-        row.children('td.short').html('<input type="text" class="short" att_id="' + d_in.id + '" value="' + d_in.short + '" />');
-        row.children('td.order').html('<input type="number" class="order" att_id="' + d_in.id + '" value="' + d_in.order + '" />');
-        row.children('td.standard').html('<input type="checkbox" class="standard" att_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
-        row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
-
-        var submit = $('tr#' + d_in.id + ' path.check');
-        submit.attr('att_id', d_in.id);
-        submit.on('click', submitAttributeForm);
-
-        var del = $('tr#' + d_in.id + ' path.trash');
-        del.attr('att_id', d_in.id);
-        del.on('click', clickDeleteAttribute);
     });
+}
+
+function makeAttributeForm(d_in) {
+    var row = $('tr#' + d_in.id);
+    var a_id = d_in.id;
+    row.children('td.title').html('<input type="text" class="title" att_id="' + d_in.id + '" value="' + (a_id=="new_attribute"? "": d_in.title) + '" />');
+    row.children('td.description').html('<input type="text" class="description" att_id="' + d_in.id + '" value="' + (a_id=="new_attribute"? "": d_in.description) + '" />');
+    row.children('td.short').html('<input type="text" class="short" att_id="' + d_in.id + '" value="' + (a_id=="new_attribute"? "": d_in.short) + '" />');
+    row.children('td.order').html('<input type="number" class="order" att_id="' + d_in.id + '" value="' + (a_id=="new_attribute"? "0": d_in.order) + '" />');
+    row.children('td.standard').html('<input type="checkbox" class="standard" att_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
+    row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
+
+    var submit = $('tr#' + d_in.id + ' path.check');
+    submit.attr('att_id', d_in.id);
+    submit.on('click', submitAttributeForm);
+
+    var del = $('tr#' + d_in.id + ' path.trash');
+    del.attr('att_id', d_in.id);
+    del.on('click', clickDeleteAttribute);
+
+    $('tr#' + d_in.id + ' input.title').focus();
+
+    return row;
 }
 
 function submitAttributeForm(event) {
@@ -69,6 +79,7 @@ function submitAttributeForm(event) {
         row.children('td.order').text(d_in.order);
         row.children('td.standard').html(d_in.standard?'&check;':'x')
         row.children('td.buttons').html('');
+        row.children('td.buttons').hide();
         row.on('click', showAttributeForm);
     })
 }
@@ -85,16 +96,16 @@ function clickDeleteAttribute(event) {
 
 function clickNewAttribute(event){
     var new_tr = '<tr id="new_attribute" class="editable attribute">'
-        + '<td class="title"><input type="text" class="title" att_id="new_attribute" value="" /></td>'
-        + '<td class="description"><input type="text" class="description" att_id="new_attribute" value="" /></td>'
-        + '<td class="short"><input type="text" class="short" att_id="new_attribute" value="" /></td>'
-        + '<td class="order"><input type="number" class="order" att_id="new_attribute" value="" /></td>'
-        + '<td class="standard"><input type="checkbox" class="standard" head_id="new_header" /></td>'
-        + '<td class="buttons"><a href="javascript:void(0)" class="submit" att_id="new_attribute">(&check;)</a></td>'
+        + '<td class="title"></td>'
+        + '<td class="description"></td>'
+        + '<td class="short"></td>'
+        + '<td class="order"></td>'
+        + '<td class="standard"></td>'
+        + '<td class="buttons"></td>'
         + '</tr>';
     if(!$('tr#new_attribute').length){
         $('table#attributes').append(new_tr);
-        $('a.submit[att_id="new_attribute"]').on('click', submitAttributeForm);
+        makeAttributeForm({id: "new_attribute"})
     }
 }
 
@@ -107,27 +118,34 @@ function clickNewAttribute(event){
 function showHeadForm(event) {
     var req_item = this;
     $.post('aj_get_head', {'head_id': req_item.id}, function(data){
-        $('tr#' + data.id).off('click');
-        // TODO: Sollten eine KeyDown-Methode bekommen
-        $('tr#' + data.id + ' td.title')
-            .html('<input type="text" class="title" head_id="' + data.id + '" value="' + data.title + '" />');
-        $('tr#' + data.id + ' td.description')
-            .html('<input type="text" class="description" head_id="' + data.id + '" value="' + data.description + '" />');
-        $('tr#' + data.id + ' td.order')
-            .html('<input type="number" class="order" head_id="' + data.id + '" value="' + data.order + '" />');
-        $('tr#' + data.id + ' td.standard')
-            .html('<input type="checkbox" class="standard" head_id="' + data.id + '"' + (data.standard?' checked':'') + '/>');
-        $('tr#' + data.id + ' td.buttons')
-            .html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
-
-        var submit = $('tr#' + data.id + ' path.check');
-        submit.attr('head_id', data.id);
-        submit.on('click', submitHeadForm);
-
-        var del = $('tr#' + data.id + ' path.trash');
-        del.attr('head_id', data.id);
-        del.on('click', clickDeleteHead);
+        var row = makeHeadForm(data);
+        row.off('click');
     });
+}
+
+function makeHeadForm(d_in) {
+    // TODO: Sollten eine KeyDown-Methode bekommen
+    var row = $('tr#' + d_in.id);
+    var h_id = d_in.id;
+
+    row.children('td.title').html('<input type="text" class="title" head_id="' + d_in.id + '" value="' + (h_id=="new_header"? "": d_in.title) + '" />');
+    row.children('td.description').html('<input type="text" class="description" head_id="' + d_in.id + '" value="' + (h_id=="new_header"? "": d_in.description) + '" />');
+    row.children('td.order').html('<input type="number" class="order" head_id="' + d_in.id + '" value="' + (h_id=="new_header"? "0": d_in.order) + '" />');
+    row.children('td.standard').html('<input type="checkbox" class="standard" head_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
+    row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
+
+    var submit = $('tr#' + d_in.id + ' path.check');
+    submit.attr('head_id', d_in.id);
+    submit.on('click', submitHeadForm);
+
+    var del = $('tr#' + d_in.id + ' path.trash');
+    del.attr('head_id', d_in.id);
+    del.on('click', clickDeleteHead);
+
+    $('tr#' + d_in.id + ' input.title').focus();
+
+    return row;
 }
 
 function submitHeadForm(event) {
@@ -143,6 +161,7 @@ function submitHeadForm(event) {
     }
 
     $.post('aj_set_head', d_out, function(d_in){
+        var row = $('tr#' + d_in.id);
         if(id=='new') {
             $('tr#new_header').attr('id', d_in.id);
         }
@@ -151,6 +170,7 @@ function submitHeadForm(event) {
         $('tr#' + d_in.id + ' td.order').text(d_in.order);
         $('tr#' + d_in.id + ' td.standard').html(d_in.standard?'&check;':'x');
         $('tr#' + d_in.id + ' td.buttons').text('');
+        row.children('td.buttons').hide();
         $('tr#' + d_in.id).on('click', showHeadForm);
     });
 }
@@ -167,15 +187,15 @@ function clickDeleteHead(event) {
 
 function clickNewHead(event){
     var new_tr = '<tr id="new_header" class="editable head_value">'
-        + '<td class="title"><input type="text" class="title" head_id="new_header" value="" /></td>'
-        + '<td class="description"><input type="text" class="description" head_id="new_header" value="" /></td>'
-        + '<td class="order"><input type="number" class="order" head_id="new_header" value="" /></td>'
-        + '<td class="standard"><input type="checkbox" class="standard" head_id="new_header" /></td>'
-        + '<td class="buttons"><a href="javascript:void(0)" class="submit" head_id="new_header">(&check;)</a></td>'
+        + '<td class="title"></td>'
+        + '<td class="description"></td>'
+        + '<td class="order"></td>'
+        + '<td class="standard"></td>'
+        + '<td class="buttons"></td>'
         + '</tr>';
     if(!$('tr#new_header').length) {
         $('table#headers').append(new_tr);
-        $('a.submit[head_id="new_header"]').on('click', submitHeadForm);
+        makeHeadForm({id: "new_header"});
     }
 }
 
@@ -206,6 +226,7 @@ function makeSkillForm(d_in) {
     row.children('td.order').html('<input type="number" class="order" skill_id="' + d_in.id + '" value="' + (s_id=="new_skill"? "0": d_in.order) + '" />');
     row.children('td.standard').html('<input type="checkbox" class="standard" skill_id="' + d_in.id + '"' + (d_in.standard?' checked':'') + '/>');
     row.children('td.buttons').html(getButton("checkmark", "check", "medium") + getButton("trash", "trash", "medium"));
+    row.children('td.buttons').show();
 
     var submit = $('tr#' + d_in.id + ' path.check');
     submit.attr('skill_id', d_in.id);
@@ -245,6 +266,7 @@ function submitSkillForm(event) {
         row.children('td.order').text(d_in.order);
         row.children('td.standard').html(d_in.standard?'&check;':'x')
         row.children('td.buttons').html('');
+        row.children('td.buttons').hide();
         row.on('click', showSkillForm);
     })
 }
