@@ -94,18 +94,18 @@ class VHead(Base):
 class CHead(Base):
     __tablename__ = 'c_head'
 
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     list_id = Column(UUID(as_uuid=True), ForeignKey('l_head.id'))
-    character_id = Column(UUID(as_uuid=True), ForeignKey('character.id'))
+    character_id = Column(UUID(as_uuid=True), ForeignKey('characters.id'))
     value_id = Column(UUID(as_uuid=True), ForeignKey('v_head.id'))
 
     list = relationship('LHead', back_populates='head_fields')
+    character = relationship('Character')
 
 
 class LAttribute(Base):
     __tablename__ = 'l_attributes'
 
-    # TODO: Order, Standard, Kürzel
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String)
@@ -114,8 +114,21 @@ class LAttribute(Base):
     standard = Column(Boolean)
 
 
+class CAttribute(Base):
+    __tablename__ = 'c_attributes'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    list_id = Column(UUID(as_uuid=True), ForeignKey('l_attributes.id'))
+    character_id = Column(UUID(as_uuid=True), ForeignKey('characters.id'))
+    value = Column(Integer, nullable=False)
+
+    list = relationship('LAttribute')
+    character = relationship('Character')
+
+
 class LSkill(Base):
     __tablename__ = 'l_skills'
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String)
@@ -128,3 +141,15 @@ class LSkill(Base):
     attribute_1 = relationship('LAttribute', foreign_keys='LSkill.attribute_1_id')
     attribute_2 = relationship('LAttribute', foreign_keys='LSkill.attribute_2_id')
     attribute_3 = relationship('LAttribute', foreign_keys='LSkill.attribute_3_id')
+
+
+class CSkill(Base):
+    __tablename__ = 'c_skills'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    list_id = Column(UUID(as_uuid=True), ForeignKey('l_skills.id'))
+    character_id = Column(UUID(as_uuid=True), ForeignKey('characters.id'))
+    value = Column(Integer, nullable=False, default=0)
+
+    list = relationship('LSkill')
+    character = relationship('Character')

@@ -46,7 +46,7 @@ Table c_head {
   id uuid [pk]
   list_id uuid [not null, ref: > l_head.id]
   character_id uuid [not null, ref: > characters.id]
-  value_id uuid [not null, ref: > v_head.id]
+  value_id uuid [ref: > v_head.id]
 }
 
 Table v_head {

@@ -46,7 +46,7 @@ CREATE TABLE "c_head" (
   "id" uuid PRIMARY KEY,
   "list_id" uuid NOT NULL,
   "character_id" uuid NOT NULL,
-  "value_id" uuid NOT NULL
+  "value_id" uuid
 );
 
 CREATE TABLE "v_head" (
