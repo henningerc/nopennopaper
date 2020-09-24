@@ -66,6 +66,7 @@ class Character(Base):
 
     user = relationship('User')
     group = relationship('Group')
+    heads = relationship('CHead')
 
 
 class LHead(Base):
@@ -101,6 +102,7 @@ class CHead(Base):
 
     list = relationship('LHead', back_populates='head_fields')
     character = relationship('Character')
+    value = relationship('VHead')
 
 
 class LAttribute(Base):

@@ -7,4 +7,15 @@
     <h2>Charakter {{ character.name }}</h2>
     <p>Besitzer: {{ character.user.username }}</p>
 </div>
+
+<div>
+    <h2>Kopfdaten</h2>
+    {% for head in character.heads %}
+    <div head_id="{{ head.id }}">
+        <div class="category">{{ head.list.title }}</div>
+        <div class="value">{{ head.value.value }}</div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
