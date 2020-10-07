@@ -100,7 +100,7 @@ class CHead(Base):
     character_id = Column(UUID(as_uuid=True), ForeignKey('characters.id'))
     value_id = Column(UUID(as_uuid=True), ForeignKey('v_head.id'))
 
-    list = relationship('LHead', back_populates='head_fields')
+    list: LHead = relationship('LHead', back_populates='head_fields')
     character = relationship('Character')
     value = relationship('VHead')
 

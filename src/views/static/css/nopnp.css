@@ -93,3 +93,13 @@ table.alter tr:nth-child(1) {
 input.order {
     width: 4em;
 }
+
+.edit_form {
+    width: 150px;
+    height: 300px;
+    float: left;
+}
+
+.values {
+    float: left;
+}

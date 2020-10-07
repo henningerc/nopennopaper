@@ -33,3 +33,9 @@ class CharacterController:
 
         db_session.commit()
         return character
+
+    @staticmethod
+    def get_head(head_id):
+        db_session = Database.Session()
+        head = db_session.query(CHead).filter_by(id=head_id).one()
+        return head

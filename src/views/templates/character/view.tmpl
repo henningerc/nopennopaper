@@ -3,19 +3,52 @@
 {% block title%}{{ character.name }}{% endblock %}
 
 {% block content%}
-<div>
-    <h2>Charakter {{ character.name }}</h2>
-    <p>Besitzer: {{ character.user.username }}</p>
-</div>
-
-<div>
-    <h2>Kopfdaten</h2>
-    {% for head in character.heads %}
-    <div head_id="{{ head.id }}">
-        <div class="category">{{ head.list.title }}</div>
-        <div class="value">{{ head.value.value }}</div>
+<div id="edit" class="edit_form"></div>
+<div class="values">
+    <div>
+        <h2>Charakter {{ character.name }}</h2>
+        <p>Besitzer: {{ character.user.username }}</p>
     </div>
-    {% endfor %}
-</div>
 
+    <div>
+        <h2>Kopfdaten</h2>
+        {% for head in character.heads %}
+        <div ajax_id="{{ head.id }}" ajax_form="head" class="edit_head">
+            <div class="category">{{ head.list.title }}</div>
+            <div class="value">{{ head.value.value }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script type="text/javascript" src="/static/js/ajax.js"></script>
+
+<script type="text/javascript">
+forms = {
+    head:{
+        name: 'head',
+        div: 'edit',
+        class: 'edit_head',
+        form: {
+            id: {
+                type: 'hidden',
+                ro: true
+            },
+            list: {
+                type: 'text',
+                type_new: 'select',
+                list_source: 'aj_lhead_list'
+            },
+            value: {
+                type: 'select_input',
+                list_source: 'aj_vhead_list'
+            }
+        }
+    }
+};
+
+var head = new Form(forms['head']);
+
+//$('.editable').on('click', showFormForAjax);
+head.hookup();
+</script>
 {% endblock %}

@@ -1,7 +1,8 @@
 import cherrypy
+from typing import Optional
 
 from src.views.view import View
-from src.models.models import Character
+from src.models.models import Character, CHead
 from src.controllers.user_management import UserManager
 from src.controllers.database_management import Database
 from src.controllers.character_controller import CharacterController
@@ -31,3 +32,12 @@ class CharacterView(View):
         if charactername is not None and charactername != "":
             character = CharacterController.create(charactername)
         raise cherrypy.HTTPRedirect("/character/view?id=" + str(character.id))
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def aj_get_character_head(self, aj_id):
+        head: Optional[CHead] = CharacterController.get_head(aj_id)
+        return {
+            'id': head.id,
+            'title': head.list.title
+        }
