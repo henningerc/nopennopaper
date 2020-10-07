@@ -38,6 +38,6 @@ class CharacterView(View):
     def aj_get_character_head(self, aj_id):
         head: Optional[CHead] = CharacterController.get_head(aj_id)
         return {
-            'id': head.id,
+            'id': str(head.id),
             'title': head.list.title
         }

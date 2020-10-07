@@ -1,67 +1,54 @@
 class Form {
-    self = this;
-
     constructor(form) {
-        this.formname = form['name'];
-        this.div = form['div'];
-        this.form = form['form'];
-        this.class = form['class'];
+        this.formvalues = form;
     }
 
     setID(id) {
         this.id = id;
     }
 
-    showForm() {
-        $('#edit').html(this.formname+"<br />"+this.id);
-        console.log(this.formname);
-        console.log(this.form);
+    loadForm() {
+        var self = this;
+        $.post(this.formvalues.getter, {'aj_id': self.id}, function(d_in){
+            self.showForm(d_in);
+        });
     }
 
-    test() {
-        console.log(this.class);
+    showForm(d_in) {
+        var div = $('#edit');
+        div.empty();
+
+        var title = document.createElement('div');
+        title.innerHTML = d_in['title'];
+
+        var a = this.formvalues.form;
+        for (const key in this.formvalues.form) {
+            if (this.formvalues.form.hasOwnProperty(key)) {
+                const element = this.formvalues.form[key];
+                switch (element.type) {
+                    case "hidden":
+                        div.append(this.fieldHidden(d_in[key], key, element))
+                        break;
+                
+                    default:
+                        div.append(title);
+                        break;
+                }
+            }
+        }
+    }
+
+    fieldHidden(value, key, element) {
+        var field = document.createElement('div');
+        field.innerHTML = value;
+        return field;
     }
 
     hookup() {
         var self = this;
-        $('.' + this.class).on('click', function(){
-            self.setID($(this).attr('ajax_id'));
-            self.showForm();
+        $('.' + this.formvalues.class).on('click', function(){
+            self.setID($(this).attr('aj_id'));
+            self.loadForm();
         });
     }
 }
-
-/*
-var form_id = "";
-var form_form = "";
-var form;
-
-function showForm(){
-    form_id = this.getAttribute('ajax_id');
-    form_form = this.getAttribute('ajax_form');
-
-    aj_function = 'aj_get_' + form_form;
-
-    $('[ajax_id="' + form_id + '"]').off('click');
-
-    $.post(aj_function, {'aj_id': form_id}, function(d_in){
-        form = makeForm(d_in);
-    });
-}
-
-function makeForm(d_in) {
-    console.log(d_in);
-}
-
-function submitForm() {
-}
-
-function remove() {
-}
-
-function showFormForAjax() {
-    form = new Form(forms[$(this).attr('ajax_form')]);
-    form.setID($(this).attr('ajax_id'));
-    form.showForm();
-}
-*/

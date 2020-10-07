@@ -30,7 +30,7 @@ function getButton(button, path_class, im_size) {
 // TODO: AttributeForm anpassen / Wie bei Skills entsprechend einbauen.
 function showAttributeForm(event) {
     var req_item = this;
-    $.post('aj_get_attribute', {'attribute_id': req_item.id}, function(d_in){
+    $.post('aj_get_attribute', {'attribute_id': req_item.id}, function(d_in) {
         var row = makeAttributeForm(d_in);
         row.off('click');
     });

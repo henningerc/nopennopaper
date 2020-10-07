@@ -13,7 +13,7 @@
     <div>
         <h2>Kopfdaten</h2>
         {% for head in character.heads %}
-        <div ajax_id="{{ head.id }}" ajax_form="head" class="edit_head">
+        <div aj_id="{{ head.id }}" class="edit_head">
             <div class="category">{{ head.list.title }}</div>
             <div class="value">{{ head.value.value }}</div>
         </div>
@@ -28,6 +28,7 @@ forms = {
         name: 'head',
         div: 'edit',
         class: 'edit_head',
+        getter: 'aj_get_character_head',
         form: {
             id: {
                 type: 'hidden',
