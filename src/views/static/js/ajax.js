@@ -29,9 +29,9 @@ class Form {
                     case "hidden":
                         div.append(this.fieldHidden(d_in[key], key, element))
                         break;
-                
+                    case "text":
+                        div.append(this.fieldText(d_in[key]));
                     default:
-                        div.append(title);
                         break;
                 }
             }
@@ -39,6 +39,14 @@ class Form {
     }
 
     fieldHidden(value, key, element) {
+        var field = document.createElement('input');
+        field.setAttribute('type', 'hidden');
+        field.setAttribute('name', key);
+        field.setAttribute('value', value)
+        return field;
+    }
+
+    fieldText(value) {
         var field = document.createElement('div');
         field.innerHTML = value;
         return field;
