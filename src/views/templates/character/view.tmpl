@@ -41,7 +41,11 @@ forms = {
             },
             value: {
                 type: 'select_input',
-                list_source: 'aj_vhead_list'
+                list_source: 'aj_get_vhead_list',
+                filter: {
+                    key: 'lhead',
+                    value_field: 'lhead_id'
+                }
             }
         }
     }

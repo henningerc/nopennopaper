@@ -2,7 +2,7 @@ import cherrypy
 from typing import Optional
 
 from src.views.view import View
-from src.models.models import Character, CHead
+from src.models.models import Character, CHead, VHead
 from src.controllers.user_management import UserManager
 from src.controllers.database_management import Database
 from src.controllers.character_controller import CharacterController
@@ -39,5 +39,16 @@ class CharacterView(View):
         head: Optional[CHead] = CharacterController.get_head(aj_id)
         return {
             'id': str(head.id),
-            'title': head.list.title
+            'title': head.list.title,
+            'lhead_id': str(head.list_id)
         }
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def aj_get_vhead_list(self, lhead):
+        db_session = Database.Session()
+        vhead_list = []
+        vheads = db_session.query(VHead).order_by('value').filter_by(list_id=lhead).all()
+        for val in vheads:
+            vhead_list.append({'id': str(val.id), 'text': val.value})
+        return vhead_list
