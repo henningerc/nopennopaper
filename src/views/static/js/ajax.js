@@ -37,6 +37,9 @@ class Form {
                     case "select_input":
                         div.append(this.fieldSelectInput(d_in[key], key, element));
                         break;
+                    case "button_submit":
+                        div.append(this.buttonSubmit(element));
+                        break;
                     default:
                         break;
                 }
@@ -61,7 +64,19 @@ class Form {
     fieldSelectInput(value, key, element) {
         var field = document.createElement('div');
         field.append(this.fieldSelect(value, key, element));
+        var input = document.createElement('input');
+        input.setAttribute('name', key);
+        field.append(input);
         return field;
+    }
+
+    buttonSubmit(element) {
+        var button = document.createElement('button');
+        var span = document.createElement('span');
+        button.setAttribute('type', button);
+        span.innerHTML = element.text;
+        button.append(span);
+        return button;
     }
 
     fieldSelect(value, key, element) {
