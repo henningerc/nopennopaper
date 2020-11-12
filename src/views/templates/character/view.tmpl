@@ -32,15 +32,17 @@ forms = {
         form: {
             id: {
                 type: 'hidden',
-                ro: true
+                id: true
             },
             title: {
                 type: 'text',
                 type_new: 'select',
-                list_source: 'aj_lhead_list'
+                list_source: 'aj_lhead_list',
+                ro: true
             },
             value: {
                 type: 'select_input',
+                input_name: 'value_text',
                 list_source: 'aj_get_vhead_list',
                 filter: {
                     key: 'lhead',
@@ -49,7 +51,8 @@ forms = {
             },
             submit: {
                 type: 'button_submit',
-                text: 'Eingeben'
+                text: 'Eingeben',
+                ro: true
             }
         }
     }

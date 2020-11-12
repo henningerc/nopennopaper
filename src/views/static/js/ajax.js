@@ -49,7 +49,33 @@ class Form {
 
     submitForm() {
         var div = $('#edit');
+
+        var values = {};
+        for (const key in this.formvalues.form) {
+            if(this.formvalues.form.hasOwnProperty(key)) {
+                const element = this.formvalues.form[key];
+                if(!element.ro) {
+                    values[key] = this.getValue(key);
+                    if(element.type=='select_input') {
+                        values[element.input_name] = ($('#edit select[name="' + key + '"]').val()=='null');
+                    }
+                }
+            }
+        }
+
+        console.log(values);
+
         div.empty();
+    }
+
+    getValue(key) {
+        var field = this.formvalues.form[key];
+        var element = $('#edit input[name="' + key + '"]');
+        if(field.type=="select_input") {
+            var v = $('#edit select[name="' + key + '"]').val();
+            if(v!='null') return v;
+        }
+        return element.val();
     }
 
     fieldHidden(value, key) {
@@ -71,6 +97,7 @@ class Form {
         field.append(this.fieldSelect(value, key, element));
         var input = document.createElement('input');
         input.setAttribute('name', key);
+        input.classList.add('edit_input');
         field.append(input);
         return field;
     }
