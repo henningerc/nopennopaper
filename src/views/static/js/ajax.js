@@ -47,6 +47,11 @@ class Form {
         }
     }
 
+    submitForm() {
+        var div = $('#edit');
+        div.empty();
+    }
+
     fieldHidden(value, key) {
         var field = document.createElement('input');
         field.setAttribute('type', 'hidden');
@@ -71,11 +76,16 @@ class Form {
     }
 
     buttonSubmit(element) {
+        var self = this;
         var button = document.createElement('button');
         var span = document.createElement('span');
+
         button.setAttribute('type', button);
         span.innerHTML = element.text;
         button.append(span);
+        button.addEventListener('click', function(){
+            self.submitForm();
+        });
         return button;
     }
 
